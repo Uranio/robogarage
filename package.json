@@ -1,0 +1,16 @@
+{
+  "name": "robogarage",
+  "version": "0.1.0",
+  "private": true,
+  "workspaces": ["backend", "frontend"],
+  "engines": { "node": ">=22" },
+  "scripts": {
+    "dev": "npm run dev -w backend",
+    "dev:frontend": "npm run dev -w frontend",
+    "build": "npm run build -w backend",
+    "build:frontend": "npm run build -w frontend",
+    "build:all": "npm run build -w backend && npm run build -w frontend",
+    "test": "npm run test -w backend",
+    "seed": "npm run seed -w backend"
+  }
+}

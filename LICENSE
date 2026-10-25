@@ -1,0 +1,74 @@
+RoboGarage — Commercial Proprietary License
+Version 1.0 — October 2026
+
+Licensor: [COMPANY NAME / FULL NAME], [ADDRESS], [VAT / TAX ID], [EMAIL]
+("Licensor")
+
+1. SUBJECT
+This license covers the RoboGarage software: backend (Hono + SQLite/git),
+frontend (React/Vite), docker-compose, scripts and documentation in this
+package ("Software"). It does NOT cover user-created content
+(skills, agents, plugins, repos): those remain the property of their
+respective authors (see Section 5 and Terms of Service).
+
+2. GRANTED RIGHTS (to paying subscribers or free-tier users)
+a) Use of the Software as a service hosted by the Licensor (SaaS) under
+   the subscribed plan (Free / Pro / Team / Enterprise).
+b) No other rights are granted without written agreement.
+
+3. PROHIBITIONS (without written permission)
+a) Copy, modify, decompile, resell, or sublicense the Software.
+b) Remove or alter logos, watermarks, or credits.
+c) Use the Software to build a competing service based on its code
+   (mass scraping, cloning, reverse-engineering the validator/marketplace).
+d) Self-hosting the server code without an Enterprise / OEM license.
+
+4. PLANS AND PAYMENTS
+Paid plans are subscription-based (monthly/annual) plus an optional
+marketplace fee on sales. Non-payment suspends Pro/Team features after a
+14-day grace period; repos stay exportable for 90 days (git/archive export),
+then inactive free accounts may be deleted with 30 days notice.
+
+5. USER CONTENT
+Skills/repos uploaded, imported, or created by users remain their property.
+Users grant the Licensor a worldwide, non-exclusive, revocable license to
+host, index, validate, preview, and distribute public content according to
+visibility settings (public/private) and, for for-sale content, to process
+payments and delivery. Private repos are never displayed, indexed, or
+included in the marketplace.
+
+6. WARRANTY AND LIABILITY
+The Software is provided "AS IS". To the maximum extent permitted by law
+the Licensor is not liable for indirect damages, data loss, or loss of
+profit. Users must keep backups of their repos (git export always available).
+Aggregate liability cap: amounts paid in the last 12 months, or EUR 100
+for free plans.
+
+7. SECURITY AND PRIVACY
+Data processing is described in PRIVACY_POLICY.md (GDPR).
+Passwords: scrypt + salt; JWT HS256 7-day expiry; single-use 30-minute reset
+tokens. The Licensor applies appropriate security measures, but users are
+responsible for strong credentials and secret rotation.
+
+8. TERM AND TERMINATION
+License is valid while the subscription is active and the Terms are met.
+Material violations (abuse, scraping, redistribution) result in immediate
+suspension. On termination users may export their repos within 90 days.
+
+9. GOVERNING LAW
+Italian law applies. Competent court: [CITY, e.g. Milan]. Mandatory EU
+consumer protections remain unaffected.
+
+10. CONTACT
+Enterprise/OEM licenses, audits, DPA: [LICENSING EMAIL].
+
+---
+HOW TO ADOPT THIS LICENSE
+1. Fill in the [PLACEHOLDERS] above.
+2. Copy this file as LICENSE in the project root.
+3. Add to package.json: "license": "SEE LICENSE IN LICENSE".
+4. Add a header to relevant source files:
+   "© [YEAR] [HOLDER] — All rights reserved. See LICENSE."
+5. If you later want to open-source the core: consider dual licensing
+   (Community AGPL + Commercial) instead of pure MIT, so competing SaaS
+   cannot reuse your code for free.
