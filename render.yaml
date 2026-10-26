@@ -41,7 +41,6 @@ services:
   - type: web
     name: robogarage-frontend
     env: static
-    region: oregon
     buildCommand: npm run build:frontend
     staticPublishPath: frontend/dist
     rootDir: .
