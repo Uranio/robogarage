@@ -1,4 +1,4 @@
-const base = '';
+const base = import.meta.env.VITE_API_URL || '';
 import { getToken, clearSession } from './session';
 
 function headers(): Record<string, string> {
