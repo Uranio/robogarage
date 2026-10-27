@@ -206,7 +206,7 @@ export default function Plugins() {
               npm run build
 
               # 2. Configura il token (usa il PAT creato sopra)
-              ./dist/index.js login --token &lt;IL_TUO_TOKEN&gt; --agent {agent}
+              ./dist/index.js login --token IL_TUO_TOKEN --agent {agent}
 
               # 3. Usa i comandi
               ./dist/index.js list
