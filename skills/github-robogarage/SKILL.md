@@ -393,6 +393,8 @@ Il plugin **robogarage-plugin** permette di collegare qualsiasi agent AI (Codex,
 ### Repository del plugin
 `https://github.com/Uranio/robogarage-plugin`
 
+> ⚠️ **Sicurezza:** non inserire mai il tuo Personal Access Token (PAT) in file committati su GitHub. Usa variabili d'ambiente o file `.env` locali (non committati).
+
 ### Installazione del plugin
 
 ```bash
