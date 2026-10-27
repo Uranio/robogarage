@@ -24,8 +24,8 @@ a:hover { text-decoration: underline; }
 .topbar-left { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
 .logo { color: var(--grn); font-weight: 700; letter-spacing: .5px; }
 .logo b { color: var(--amb); }
-.nav { display: flex; gap: 14px; margin-left: 12px; }
-.nav a { color: var(--dim); } .nav a.on, .nav a:hover { color: var(--grn); }
+.nav { display: flex; gap: 22px; margin-left: 16px; }
+.nav a { color: var(--dim); padding: 4px 6px; border-radius: 4px; } .nav a.on, .nav a:hover { color: var(--grn); background: rgba(51,255,102,.06); }
 .prompt { color: var(--amb); }
 .panel { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; }
 .pad { padding: 16px; }
