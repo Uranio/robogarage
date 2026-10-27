@@ -20,7 +20,7 @@ app.post('/tokens', async (c) => {
   if (denied) return denied;
   const me = authed(c)!;
 
-  const { name, scopes, expires_in_days } = await c.req.json({});
+  const { name, scopes, expires_in_days } = await c.req.json();
   if (!name || typeof name !== 'string' || name.trim().length < 2) {
     return c.json({ detail: 'name: at least 2 characters' }, 400);
   }
