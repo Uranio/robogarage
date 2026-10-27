@@ -79,7 +79,14 @@ app.use('/api/*', async (c, next) => {
     } else {
       const pat = await verifyPat(token);
       if (pat) {
-        c.set('user', { sub: pat.userId, u: pat.username, pat: true });
+        const now = Math.floor(Date.now() / 1000);
+        c.set('user', {
+          sub: pat.userId,
+          u: pat.username,
+          pat: true,
+          iat: now,
+          exp: now + 7 * 86400,
+        });
       }
     }
   }
