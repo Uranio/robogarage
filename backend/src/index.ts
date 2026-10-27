@@ -8,7 +8,8 @@ import importRouter from './routes/import.js';
 import tools from './routes/tools.js';
 import validate from './routes/validate.js';
 import marketplace from './routes/marketplace.js';
-import { verifyToken, TokenPayload } from './auth.js';
+import tokens from './routes/tokens.js';
+import { verifyToken, TokenPayload, verifyPat } from './auth.js';
 import { rateLimit } from './ratelimit.js';
 
 const app = new Hono<{ Variables: { user: TokenPayload } }>();
@@ -66,12 +67,21 @@ app.use('/api/import', rateLimit('import', 60 * 60_000, 30));
 app.use('/api/import/paste', rateLimit('import', 60 * 60_000, 30));
 
 // JWT middleware: verified identity lands in context; anonymous stays null.
-// Public reads stay open — writes and private content check identity per route.
+// A valid Personal Access Token (PAT) in the Authorization header is accepted
+// as an alternative to JWT for API automation (imports, CI, deploys…).
 app.use('/api/*', async (c, next) => {
   const h = c.req.header('Authorization') || '';
   if (h.startsWith('Bearer ')) {
-    const payload = verifyToken(h.slice(7));
-    if (payload) c.set('user', payload);
+    const token = h.slice(7);
+    let payload = verifyToken(token);
+    if (payload) {
+      c.set('user', payload);
+    } else {
+      const pat = await verifyPat(token);
+      if (pat) {
+        c.set('user', { sub: pat.userId, u: pat.username, pat: true });
+      }
+    }
   }
   return next();
 });
@@ -100,6 +110,7 @@ app.route('/api', importRouter);
 app.route('/api', tools);
 app.route('/api', validate);
 app.route('/api', marketplace);
+app.route('/api', tokens);
 
 app.notFound((c) => c.json({ detail: 'not found' }, 404));
 

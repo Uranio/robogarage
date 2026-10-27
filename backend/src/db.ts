@@ -108,6 +108,24 @@ try {
   // column already present (existing DBs) — no problem
 }
 
+// Personal Access Tokens (PAT): hash stored, plaintext shown once at creation.
+db.exec(`
+CREATE TABLE IF NOT EXISTS personal_access_tokens (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  name TEXT NOT NULL,
+  token_hash TEXT NOT NULL,
+  token_prefix TEXT NOT NULL,
+  scopes TEXT NOT NULL DEFAULT 'repos:write,import:write',
+  expires_at TEXT,
+  last_used_at TEXT,
+  revoked INTEGER DEFAULT 0,
+  created_at TEXT DEFAULT (datetime('now'))
+);
+CREATE INDEX IF NOT EXISTS idx_pat_user ON personal_access_tokens(user_id);
+CREATE INDEX IF NOT EXISTS idx_pat_prefix ON personal_access_tokens(token_prefix);
+`);
+
 // One star per user (the old counter could be spammed indefinitely).
 db.exec(`
 CREATE TABLE IF NOT EXISTS stars (

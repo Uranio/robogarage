@@ -4,7 +4,7 @@ import { Hono } from 'hono';
 import * as fs from 'fs';
 import { db } from '../db.js';
 import { avatarAbs, avatarContentType, deleteAvatar, saveAvatar } from '../avatars.js';
-import { signToken, authed } from '../auth.js';
+import { signToken, authed, verifyHash } from '../auth.js';
 import { appUrl, sendResetMail } from '../mail.js';
 
 const app = new Hono();
@@ -37,18 +37,6 @@ async function hashPassword(password: string): Promise<string> {
   const salt = randomBytes(16).toString('hex');
   const hash = await scryptAsync(password, salt, 64);
   return `${salt}:${hash.toString('hex')}`;
-}
-
-async function verifyPassword(password: string, stored: string): Promise<boolean> {
-  const [salt, hex] = (stored || '').split(':');
-  if (!salt || !hex) return false;
-  try {
-    const expected = Buffer.from(hex, 'hex');
-    const actual = await scryptAsync(password, salt, expected.length);
-    return expected.length === actual.length && timingSafeEqual(expected, actual);
-  } catch {
-    return false;
-  }
 }
 
 // Constant-time comparison for the bootstrap admin token.
@@ -109,7 +97,7 @@ app.post('/login', async (c) => {
   if (!user.password_hash) {
     return c.json({ detail: 'This account has no password yet — use "Forgot password?" to set one', code: 'no_password' }, 401);
   }
-  if (!password || !(await verifyPassword(String(password), user.password_hash))) {
+  if (!password || !(await verifyHash(String(password), user.password_hash))) {
     return c.json({ detail: 'Invalid credentials' }, 401);
   }
   const { password_hash: _drop, ...pub } = user;

@@ -1,10 +1,14 @@
-import { createHmac, randomBytes } from 'crypto';
+import { createHmac, randomBytes, scrypt, timingSafeEqual } from 'crypto';
+import { promisify } from 'util';
+import { db } from './db.js';
 
 // ---------------------------------------------------------------------------
 // Minimal JWT (HS256, no dependencies): keeps install light and auditable.
 // Stateless — any backend replica verifies with the same JWT_SECRET.
 // In production set JWT_SECRET to a long random value; dev default warns.
 // ---------------------------------------------------------------------------
+
+const scryptAsync = promisify(scrypt) as (password: string, salt: string, keylen: number) => Promise<Buffer>;
 
 function b64url(input: Buffer | string): string {
   return Buffer.from(input as any).toString('base64url');
@@ -40,6 +44,51 @@ export function signToken(user: { id: number; username: string }, days = 7): str
 
 export function newCsrfToken(): string {
   return randomBytes(16).toString('hex');
+}
+
+/** Hash a plain password/token with scrypt (same scheme as user passwords). */
+export async function hashPassword(plain: string): Promise<string> {
+  const salt = randomBytes(16).toString('hex');
+  const hash = await scryptAsync(plain, salt, 64);
+  return `${salt}:${hash.toString('hex')}`;
+}
+
+/** Constant-time verify a plain value against a scrypt hash stored as salt:hex. */
+export async function verifyHash(plain: string, stored: string): Promise<boolean> {
+  const [salt, hex] = (stored || '').split(':');
+  if (!salt || !hex) return false;
+  try {
+    const expected = Buffer.from(hex, 'hex');
+    const actual = await scryptAsync(plain, salt, expected.length);
+    return expected.length === actual.length && timingSafeEqual(expected, actual);
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * Verify a Personal Access Token (PAT).
+ * Tokens are hex strings; we look up by the first 8 chars (prefix) to avoid
+ * running scrypt against every stored token, then constant-time compare.
+ * Returns { userId, username } or null. Updates last_used_at on success.
+ */
+export async function verifyPat(token: string): Promise<{ userId: number; username: string } | null> {
+  if (!token || token.length < 16) return null;
+  const prefix = token.slice(0, 8);
+  const rows = db.prepare(
+    `SELECT t.id, t.user_id, t.token_hash, t.expires_at, t.revoked, u.username
+     FROM personal_access_tokens t
+     JOIN users u ON u.id = t.user_id
+     WHERE t.token_prefix = ? AND t.revoked = 0`
+  ).all(prefix) as any[];
+  for (const row of rows) {
+    if (row.expires_at && new Date(row.expires_at) < new Date()) continue;
+    if (await verifyHash(token, row.token_hash)) {
+      db.prepare('UPDATE personal_access_tokens SET last_used_at = datetime("now") WHERE id = ?').run(row.id);
+      return { userId: row.user_id, username: row.username };
+    }
+  }
+  return null;
 }
 
 export function verifyToken(token: string): TokenPayload | null {

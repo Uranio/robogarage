@@ -298,6 +298,91 @@ Vedi `tests/skill.test.js`.
 - `references/render-deploy.md` — deploy passo-passo su Render.
 - `references/frontend-backend-connection.md` — collegamento CORS e VITE_API_URL.
 - `references/project-structure.md` — mappa file del progetto.
+- `references/personal-access-tokens.md` — token personali per import sicuri.
+
+---
+
+## 12. Personal Access Token (PAT) — import sicuro
+
+RoboGarage può generare **Personal Access Token** per automatizzare import e creazione repository senza dover usare il JWT di sessione (utile per CI, script, Render deploy…).
+
+### Sicurezza
+- Il token viene **hashato con scrypt** prima di essere salvato; il valore in chiaro non è mai memorizzato.
+- Viene mostrato **una sola volta** nella risposta di creazione. Dopo, recuperi solo il prefisso (es. `rk_a1b2c3d4`).
+- Ogni token ha **scope** (default: `repos:write,import:write`), eventuale **scadenza** e può essere **revocato** in qualsiasi momento.
+- Max 20 token attivi per utente.
+
+### Endpoint (richiedono JWT di sessione)
+
+```
+POST   /api/users/tokens     crea un nuovo PAT
+GET    /api/users/tokens     lista i tuoi token (senza valore in chiaro)
+DELETE /api/users/tokens/:id revoca un token
+```
+
+### Esempio: creare un token
+
+```bash
+# 1. Login per ottenere il JWT
+JWT=$(curl -s -X POST https://robogarage-back2.onrender.com/api/login \
+  -H 'Content-Type: application/json' \
+  -d '{"username":"tuo-utente","password":"tua-password"}' | jq -r '.token')
+
+# 2. Crea il PAT (il valore `token` appare solo qui)
+curl -s -X POST https://robogarage-back2.onrender.com/api/users/tokens \
+  -H "Authorization: Bearer $JWT" \
+  -H 'Content-Type: application/json' \
+  -d '{"name":"render-deploy","scopes":"repos:write,import:write","expires_in_days":90}'
+```
+
+Risposta esempio:
+```json
+{
+  "id": 7,
+  "name": "render-deploy",
+  "prefix": "rk_a1b2c3d4",
+  "scopes": "repos:write,import:write",
+  "expires_at": "2026-11-27T20:00:00.000Z",
+  "token": "rk_a1b2c3d4e5f6…<64 char esadecimali>"
+}
+```
+> 🔴 Copia subito `token`: dopo questa risposta non è più leggibile.
+
+### Esempio: importare una skill usando il PAT (senza JWT)
+
+```bash
+PAT="rk_a1b2c3d4e5f6…"
+
+curl -s -X POST https://robogarage-back2.onrender.com/api/import/paste \
+  -H "Authorization: Bearer $PAT" \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "owner": "tuo-utente",
+    "skill_md": "---\nname: mia-skill\ndescription: Skill importata via PAT\n---\n\n# Mia skill\n\nDescrizione qui.\n",
+    "visibility": "private"
+  }'
+```
+
+### Esempio: lista e revoca
+
+```bash
+# Lista token (usa il JWT)
+curl -s -H "Authorization: Bearer $JWT" https://robogarage-back2.onrender.com/api/users/tokens
+
+# Revoca il token numero 7 (usa il JWT)
+curl -s -X DELETE -H "Authorization: Bearer $JWT" https://robogarage-back2.onrender.com/api/users/tokens/7
+```
+
+### Usare il PAT per creare un repository
+
+Il PAT funziona su tutte le rotte di scrittura (`POST /api/repos`, `POST /api/repos/:id/commit`, `POST /api/import`, ecc.) esattamente come il JWT:
+
+```bash
+curl -s -X POST https://robogarage-back2.onrender.com/api/repos \
+  -H "Authorization: Bearer $PAT" \
+  -H 'Content-Type: application/json' \
+  -d '{"owner":"tuo-utente","name":"mia-skill","description":"Skill via PAT","visibility":"private","kind":"skill"}'
+```
 
 ---
 

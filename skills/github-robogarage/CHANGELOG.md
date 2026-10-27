@@ -8,3 +8,4 @@
 - Variabili d'ambiente: `VITE_API_URL`, `CORS_ORIGINS`, `JWT_SECRET`, `DATA_DIR`
 - Collegamento frontend ↔ backend su Render
 - Responsive: hamburger menu, robot in alto, niente fixed, breakpoint 700px/640px/480px
+- Personal Access Token (PAT): POST/GET/DELETE /api/users/tokens, hash scrypt, token mostrato una volta, scope, scadenza, revoca, uso su tutte le rotte di scrittura (import, repos, commit)
