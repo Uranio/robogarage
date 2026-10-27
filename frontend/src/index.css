@@ -77,3 +77,102 @@ pre, code { font: inherit; }
 .filebtn:hover { border-color: var(--grn); color: var(--grn); }
 .filebtn input { display: none; }
 .filebtn span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* ===== Responsive ===== */
+@media (max-width: 640px) {
+  html { font-size: 15px; } /* previene zoom accidentale su iOS negli input */
+
+  body { font-size: 14px; }
+
+  .wrap { padding: 0 12px 70px; }
+
+  .topbar-in {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+    padding: 12px 16px;
+  }
+
+  .topbar-in .logo { order: 1; }
+
+  .topbar-in .nav {
+    order: 2;
+    flex-direction: column;
+    width: 100%;
+    gap: 6px;
+    margin-left: 0;
+    padding-top: 8px;
+    border-top: 1px solid var(--line);
+  }
+  .topbar-in .nav a { display: block; padding: 6px 0; }
+
+  .topbar-in .grow { order: 3; display: none; }
+
+  .topbar-in > button,
+  .topbar-in > span.row {
+    order: 4;
+    width: 100%;
+    text-align: center;
+  }
+
+  .topbar-in .row { justify-content: center; gap: 8px; flex-wrap: wrap; }
+
+  h1 { font-size: 24px !important; margin: 8px 0; }
+  h2 { font-size: 20px !important; }
+
+  .panel { border-radius: 8px; }
+  .pad { padding: 12px; }
+
+  .row { flex-direction: column; align-items: stretch; gap: 8px; }
+  .row > * { width: 100%; }
+
+  input, select, textarea, button {
+    font-size: 16px !important; /* previene zoom iOS */
+    padding: 10px 12px;
+    min-height: 44px; /* touch target minimo */
+  }
+
+  button { width: 100%; }
+
+  /* tabelle con scroll orizzontale invece di uscire dallo schermo */
+  table { display: block; overflow-x: auto; white-space: nowrap; }
+  th, td { white-space: nowrap; padding: 8px 10px; font-size: 13px; }
+
+  .grid2 { grid-template-columns: 1fr !important; gap: 10px; }
+
+  .hero h1 { font-size: 22px !important; }
+
+  .code { font-size: 13px; padding: 10px; }
+
+  .avatar { width: 32px; height: 32px; line-height: 32px; font-size: 16px; }
+
+  pre.grn { font-size: 10px; line-height: 1; } /* ASCII robot più compatto su mobile */
+
+  .filebtn { font-size: 14px; padding: 10px; }
+
+  .badge { font-size: 11px; padding: 2px 8px; }
+}
+
+@media (max-width: 480px) {
+  .wrap { padding: 0 10px 60px; }
+  .pad { padding: 10px; }
+
+  h1 { font-size: 20px !important; }
+  h2 { font-size: 18px !important; }
+
+  .topbar-in { padding: 10px 14px; }
+
+  .grid2 { gap: 8px; }
+
+  textarea { min-height: 140px; }
+
+  .code { font-size: 12px; }
+
+  pre.grn { font-size: 8px; }
+
+  .filebtn span { font-size: 13px; }
+
+  button { min-height: 48px; }
+
+  .topbar-in .row { gap: 6px; }
+}
