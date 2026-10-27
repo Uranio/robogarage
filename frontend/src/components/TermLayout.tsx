@@ -37,13 +37,14 @@ export default function TermLayout() {
     <>
       <div className="topbar">
         <div className="topbar-in">
-          <span className="logo row" onClick={closeMenu} style={{ gap: 8, cursor: 'pointer' }}>
-            robogarage<WrenchIcon size={15} /><b>_</b>
-          </span>
-
-          <button className="menu-btn" aria-label="Menu" onClick={() => setMenuOpen(!menuOpen)}>
-            {menuOpen ? '✕' : '☰'}
-          </button>
+          <div className="topbar-left">
+            <button className="menu-btn" aria-label="Menu" onClick={() => setMenuOpen(!menuOpen)}>
+              {menuOpen ? '✕' : '☰'}
+            </button>
+            <span className="logo row" onClick={closeMenu} style={{ gap: 8, cursor: 'pointer' }}>
+              robogarage<WrenchIcon size={15} /><b>_</b>
+            </span>
+          </div>
 
           {/* Desktop row (hidden on mobile via CSS) */}
           <nav className="nav desktop-nav">

@@ -20,6 +20,8 @@ a:hover { text-decoration: underline; }
   border-bottom: 1px solid var(--line); background: #0d1114;
 }
 .topbar-in { max-width: 1060px; margin: 0 auto; padding: 10px 16px; display: flex; gap: 14px; align-items: center; }
+
+.topbar-left { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
 .logo { color: var(--grn); font-weight: 700; letter-spacing: .5px; }
 .logo b { color: var(--amb); }
 .nav { display: flex; gap: 14px; margin-left: 12px; }
@@ -255,6 +257,7 @@ pre, code { font: inherit; }
   .desktop-nav, .desktop-spacer, .desktop-actions { display: none; }
 
   .topbar-in { padding: 10px 14px; gap: 10px; }
+  .topbar-left { gap: 8px; }
   .logo { font-size: 16px; }
 
   .wrap { padding: 0 12px 70px; }
