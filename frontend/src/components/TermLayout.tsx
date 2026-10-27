@@ -52,6 +52,7 @@ export default function TermLayout() {
             <NavLink to="/skills" className={({ isActive }) => (isActive ? 'on' : '')}>~/skills</NavLink>
             <NavLink to="/import" className={({ isActive }) => (isActive ? 'on' : '')}>↓ import</NavLink>
             <NavLink to="/plugins" className={({ isActive }) => (isActive ? 'on' : '')}>🔌 plugin</NavLink>
+            <NavLink to="/docs" className={({ isActive }) => (isActive ? 'on' : '')}>📖 docs</NavLink>
             <NavLink to="/new" className={({ isActive }) => (isActive ? 'on' : '')}>+ new</NavLink>
           </nav>
 
@@ -92,6 +93,7 @@ export default function TermLayout() {
               <NavLink to="/skills" onClick={closeMenu} className={({ isActive }) => (isActive ? 'on' : '')}>~/skills</NavLink>
               <NavLink to="/import" onClick={closeMenu} className={({ isActive }) => (isActive ? 'on' : '')}>↓ import</NavLink>
             <NavLink to="/plugins" onClick={closeMenu} className={({ isActive }) => (isActive ? 'on' : '')}>🔌 plugin</NavLink>
+            <NavLink to="/docs" onClick={closeMenu} className={({ isActive }) => (isActive ? 'on' : '')}>📖 docs</NavLink>
             <NavLink to="/new" onClick={closeMenu} className={({ isActive }) => (isActive ? 'on' : '')}>+ new</NavLink>
             </nav>
             <div className="menu-actions" style={{ marginTop: 'auto', display: 'flex', flexDirection: 'column', gap: 10 }}>

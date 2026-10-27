@@ -6,6 +6,7 @@ import Import from './pages/Import';
 import Plugins from './pages/Plugins';
 import Privacy from './pages/Privacy';
 import Terms from './pages/Terms';
+import Docs from './pages/Docs';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Recover from './pages/Recover';
@@ -25,6 +26,7 @@ export default function App() {
           <Route path="/plugins" element={<Plugins />} />
           <Route path="/privacy" element={<Privacy />} />
           <Route path="/terms" element={<Terms />} />
+          <Route path="/docs" element={<Docs />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/recover" element={<Recover />} />
