@@ -26,6 +26,7 @@ export interface TokenPayload {
   u: string; // username
   iat: number;
   exp: number;
+  pat?: boolean; // true if authenticated via Personal Access Token
 }
 
 export function getSecret(): string {
