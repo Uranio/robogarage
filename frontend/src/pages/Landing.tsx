@@ -20,11 +20,11 @@ export default function Landing() {
       <h1 style={{ fontSize: 32, margin: '10px 0' }}>Every robot needs a garage<span className="blink grn">▊</span></h1>
       <div className="dim">Skills, agents &amp; plugins — serviced, validated, ready to dance.</div>
 
-      <div style={{ marginTop: 22 }}>
+      <div style={{ marginTop: 14 }}>
         <DancingRobot />
       </div>
 
-      <div className="row" style={{ justifyContent: 'center', marginTop: 20 }}>
+      <div className="row" style={{ justifyContent: 'center', marginTop: 26 }}>
         {me ? (
           <Link to="/new"><button className="amber">+ Create your skill</button></Link>
         ) : (
