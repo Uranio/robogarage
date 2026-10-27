@@ -88,7 +88,8 @@ export default function TermLayout() {
               <NavLink to="/" onClick={closeMenu} className={({ isActive }) => (isActive ? 'on' : '')}>~/home</NavLink>
               <NavLink to="/skills" onClick={closeMenu} className={({ isActive }) => (isActive ? 'on' : '')}>~/skills</NavLink>
               <NavLink to="/import" onClick={closeMenu} className={({ isActive }) => (isActive ? 'on' : '')}>↓ import</NavLink>
-              <NavLink to="/new" onClick={closeMenu} className={({ isActive }) => (isActive ? 'on' : '')}>+ new</NavLink>
+            <NavLink to="/plugins" onClick={closeMenu} className={({ isActive }) => (isActive ? 'on' : '')}>🔌 plugin</NavLink>
+            <NavLink to="/new" onClick={closeMenu} className={({ isActive }) => (isActive ? 'on' : '')}>+ new</NavLink>
             </nav>
             <div className="menu-actions" style={{ marginTop: 'auto', display: 'flex', flexDirection: 'column', gap: 10 }}>
               {me ? (
@@ -108,6 +109,8 @@ export default function TermLayout() {
               <button className="ghost" onClick={toggleTheme} style={{ textAlign: 'center', width: '100%' }}>
                 {theme === 'dark' ? '◐ light' : '◑ dark'}
               </button>
+              <Link to="/privacy" className="menu-link" style={{ textAlign: 'center', display: 'block', marginBottom: 6, fontSize: 12 }}>Privacy</Link>
+              <Link to="/terms" className="menu-link" style={{ textAlign: 'center', display: 'block', marginBottom: 6, fontSize: 12 }}>Termini</Link>
             </div>
           </div>
         </div>

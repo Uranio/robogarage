@@ -1,74 +1,97 @@
 # Privacy Policy — RoboGarage
-Last updated: October 13, 2026 — Version 1.0
+Last updated: October 27, 2026 — Version 1.1
 
-Data controller: [COMPANY NAME / FULL NAME], [ADDRESS], [VAT/TAX ID],
-privacy email: [PRIVACY EMAIL], PEC: [PEC if any].
-DPO (if appointed): [NAME, EMAIL]. For Enterprise self-hosted the customer
-is the independent controller; we act as processor only under a signed DPA.
+Data controller: **Leonardo Martellini** — progetto **RoboGarage** (free/open source).
+Email privacy: privacy@robogarage.example.com (sostituisci con l'email dell'istanza in uso).
+DPO: non nominato (progetto free, sotto soglia). Per self-hosting Enterprise il cliente è titolare autonomo.
 
-## 1. What we collect and why (GDPR legal basis)
-- **Account**: username, email, display name, color, password hash (scrypt+salt,
-  never plaintext), avatar (2MB max). Basis: contract performance (Art. 6(1)(b)).
-- **Content**: repos/skills, commits, PRs, stars, collaborators, public/private
-  visibility. Basis: contract. Private repos are never published.
-- **Payments** (paid plans only): handled by Stripe; we only see customer ID,
-  plan, last-4 digits and invoices, never full card numbers. Basis: contract
-  + tax obligations (Art. 6(1)(c)).
-- **Technical**: server logs (IP, user-agent, timestamps, errors), JWT kept only
-  in your browser (7 days). Basis: legitimate interest in security (Art. 6(1)(f)),
-  12-month retention then aggregation.
-- **Password recovery**: single-use 30-minute token + email. Without configured
-  SMTP the link goes only to server logs (local use).
-- **Service email**: transactional only (welcome, reset, security alerts,
-  invoices). Marketing only with separate consent (Art. 6(1)(a)), revocable.
-
-No advertising profiling, no data selling.
-
-## 2. Where data lives
-Backend: [HETZNER/EU — Falkenstein, specify]. DB is SQLite today (`./data/*.db`,
-git repos in `./data/repos`, avatars in `./data/avatars`); in production EU
-Postgres + EU S3 with daily encrypted backups (30-day retention). No transfers
-outside the EU/EEA except subprocessors under SCCs (e.g. Stripe, email provider
-— see §5).
-
-## 3. Sharing
-- **Public** repos: visible to anyone + Claude marketplace (only validated
-  public plugins, with real sha256).
-- **Private** repos: visible only to you/collaborators; APIs return 404 to
-  outsiders (never leak existence).
-- Subprocessors: EU hosting, Stripe, SMTP provider. Up-to-date list on request
-  at [PRIVACY EMAIL]. No data selling.
-
-## 4. Retention
-Active account: for the account lifetime + 24 months aggregated logs. On deletion:
- repos exportable for 90 days (git/archive export), then DB + git + avatar
- deletion within 30 days; invoices 10 years (tax duty); expired reset tokens
- deleted immediately. Backups: deletion within 30 days of cycle.
-
-## 5. Your rights (GDPR Art. 15–22)
-Access, rectification, erasure, restriction, portability (JSON export + git
-tarball via UI/API), objection, consent withdrawal. Write to [PRIVACY EMAIL]
-with your username; we reply within 30 days. Complaint to your supervisory
-authority (e.g. Garante in Italy).
-
-## 6. Security (Art. 32 measures)
-scrypt + salt passwords, HS256 JWT with long rotated `JWT_SECRET`, TLS
-everywhere (HSTS), encrypted backups, SSH-key + 2FA server access, login/
-recover rate limits, upload validation (type/size, avatar anti-traversal),
-immutable logs. Breaches notified within 72h to the authority and, if high
-risk, to data subjects.
-
-## 7. Children
-Service not allowed under 16 (or 14 where parental consent is permitted).
-
-## 8. Cookies
-Technical only (JWT session, preferences, load balancer). No profiling cookies.
-Banner only if you add analytics/marketing — none today.
-
-## 9. Changes
-We notify you 30 days in advance by email for material changes; continued use
-= acceptance. Previous versions kept in repo.
+RoboGarage è un progetto **free** sviluppato da **Leonardo Martellini**. Tutti i diritti sono riservati. Distribuito sotto licenza MIT.
 
 ---
-FILL IN BEFORE GO-LIVE: controller identity, privacy email, hosting location,
-subprocessors, DPO, exact retention times, Terms and DPA links.
+
+## 1. Dati raccolti e finalità (base giuridica GDPR)
+
+| Dato | Perché lo raccogliamo | Base giuridica |
+|------|----------------------|----------------|
+| **Account**: username, email (opzionale), display name, password hash (scrypt+salt, mai in chiaro), avatar (max 2 MB) | Registrazione, autenticazione, profilo utente | Art. 6(1)(b) esecuzione contratto |
+| **Contenuti**: skill, repository, commits, pull request, stelle, collaboratori, visibilità pubblica/privata | Erogazione servizio di hosting skill/agent/plugin | Art. 6(1)(b) esecuzione contratto |
+| **Token personali (PAT)**: hashati con scrypt; valore in chiaro **mai memorizzato** | Automazione API, import, publish, validazione | Art. 6(1)(b) |
+| **Tecnici**: log server (IP, user-agent, timestamp, errori), JWT solo nel browser (scadenza 7 gg) | Sicurezza, rate limiting, prevenzione abusi | Art. 6(1)(f) interesse legittimo |
+| **Recupero password**: token monouso 30 min + email | Reset password | Art. 6(1)(b) |
+| **Email di servizio**: transazionali (benvenuto, reset, alert sicurezza) | Gestione account | Art. 6(1)(b) |
+
+Nessuna profilazione pubblicitaria, nessuna vendita di dati, nessun cookie di tracciamento. Solo cookie tecnici di sessione.
+
+---
+
+## 2. Dove risiedono i dati
+
+- **Backend**: hosted in UE (specificare località dell'istanza, es. Hetzner Falkenstein).
+- **Database**: SQLite (`./data/*.db`), git repos in `./data/repos`, avatar in `./data/avatars`.
+- **Produzione**: Postgres EU + S3 EU con backup cifrati quotidiani (retention 30 giorni).
+- Nessun trasferimento fuori UE/SEE salvo subprocessori con clausole contrattuali tipo (es. Stripe, provider email — vedi §5).
+
+---
+
+## 3. Condivisione
+
+- **Repository pubblici**: visibili a chiunque + marketplace Claude (solo plugin pubblici validati, con sha256 reale).
+- **Repository privati**: visibili solo a te/collaboratori; le API restituiscono 404 agli estranei (non si rivela l'esistenza).
+- Subprocessori: hosting EU, Stripe, provider SMTP. Lista aggiornata su richiesta.
+
+---
+
+## 4. Conservazione
+
+- Account attivo: per tutta la vita dell'account + 24 mesi log aggregati.
+- Cancellazione account: esportazione repo per 90 giorni (git/archive), poi cancellazione DB + git + avatar entro 30 giorni.
+- Fatture: 10 anni (obbligo fiscale).
+- Token di recupero scaduti: cancellati immediatamente.
+- Backup: cancellazione entro 30 giorni dal ciclo.
+
+---
+
+## 5. I tuoi diritti (GDPR Art. 15–22)
+
+Accesso, rettifica, cancellazione, limitazione, portabilità (esportazione JSON + tarball git via UI/API), opposizione, revoca del consenso.
+Scrivere a privacy@robogarage.example.com con il proprio username; rispondiamo entro 30 giorni. Reclamo all'autorità di controllo (es. Garante privacy in Italia).
+
+---
+
+## 6. Sicurezza (Art. 32 GDPR)
+
+- Password hashate con scrypt + sale.
+- JWT HS256 con `JWT_SECRET` lungo e rotato.
+- TLS ovunque (HSTS).
+- Backup cifrati.
+- Rate limit su login/recupero.
+- Validazione upload (tipo/dimensione, avatar anti-traversal).
+- Notifica violazioni entro 72 ore all'autorità e, se alto rischio, agli interessati.
+
+---
+
+## 7. Minori
+
+Il servizio non è consentito ai minori di 16 anni (o 14 dove il consenso dei genitori è permesso).
+
+---
+
+## 8. Cookie
+
+Solo tecnici (sessione JWT, preferenze, load balancer). Nessun cookie di profilazione. Banner solo se si aggiunge analytics/marketing — oggi assente.
+
+---
+
+## 9. Modifiche
+
+Notifichiamo 30 giorni prima via email per modifiche sostanziali; l'uso continuato = accettazione. Versioni precedenti conservate nel repo.
+
+---
+
+## 10. Contatti
+
+Per richieste privacy: privacy@robogarage.example.com (sostituisci con l'email dell'istanza in uso).
+
+---
+
+© 2026 **Leonardo Martellini**. Tutti i diritti riservati.

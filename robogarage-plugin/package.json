@@ -1,0 +1,30 @@
+{
+  "name": "robogarage-plugin",
+  "version": "1.0.0",
+  "description": "Plugin ufficiale RoboGarage per collegare Codex, Claude Code, OpenCode, Pi e altri agent al tuo account RoboGarage e automatizzare skill, import, publish e validazione.",
+  "bin": {
+    "robogarage": "./dist/index.js"
+  },
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "dev": "tsx src/index.ts"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "typescript": "^5.5.0",
+    "tsx": "^4.19.0"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "keywords": ["robogarage", "codex", "claude", "opencode", "pi", "skill", "plugin", "automation"],
+  "author": "Leonardo Martellini",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Uranio/robogarage-plugin.git"
+  }
+}
