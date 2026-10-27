@@ -25,10 +25,11 @@ export async function listCommand(args: string[]): Promise<void> {
       console.log('Nessuna skill trovata.');
       return;
     }
-    console.log(`Skill disponibili su RoboGarage (${repos.length}):\n`);
+    console.log(`📦 Skill disponibili su RoboGarage (${repos.length}):\n`);
     for (const r of repos) {
+      const kindEmoji = r.kind === 'plugin' ? '🔌' : r.kind === 'agent' ? '🤖' : '📦';
       console.log(
-        `  ${r.owner}/${r.name}  [${r.kind}]  ${r.visibility}  ★${r.stars}`
+        `  ${kindEmoji} ${r.owner}/${r.name}  [${r.kind}]  ${r.visibility}  ★${r.stars}`
       );
       if (r.description) console.log(`     ${r.description.slice(0, 80)}`);
     }

@@ -41,7 +41,6 @@ export async function importCommand(args: string[]): Promise<void> {
 
   const client = new RoboGarageClient(config.baseUrl, config.token);
   try {
-    // Cerca il repo
     const repos = await client.listRepos();
     const repo = repos.find((r) => r.owner === owner && r.name === skillName);
     if (!repo) {
@@ -67,7 +66,6 @@ export async function importCommand(args: string[]): Promise<void> {
     );
     fs.mkdirSync(outDir, { recursive: true });
 
-    // Estrazione tar.gz nativa (Node 20+ ha fs per questo? No, usiamo child_process tar)
     const { execSync } = await import('child_process');
     execSync(`tar -xzf - -C "${outDir}"`, { input: Buffer.from(buf) });
 

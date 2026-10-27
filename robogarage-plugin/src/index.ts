@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
  * RoboGarage Plugin CLI — punto di ingresso.
- * Collega Codex, Claude Code, OpenCode, Pi e altri agent a RoboGarage.
+ * Collega Codex, Claude Code, OpenCode/Crush, Pi, Cursor e Gemini a RoboGarage.
  */
 
 import { loginCommand } from './commands/login.js';
@@ -9,6 +9,7 @@ import { listCommand } from './commands/list.js';
 import { importCommand } from './commands/import.js';
 import { validateCommand } from './commands/validate.js';
 import { publishCommand } from './commands/publish.js';
+import { initCommand } from './commands/init.js';
 
 const cmd = process.argv[2];
 const args = process.argv.slice(3);
@@ -30,6 +31,9 @@ async function main(): Promise<void> {
     case 'publish':
       await publishCommand(args);
       break;
+    case 'init':
+      await initCommand(args);
+      break;
     case '--help':
     case '-h':
     case undefined:
@@ -50,11 +54,14 @@ Utilizzo:
   robogarage <comando> [opzioni]
 
 Comandi:
-  login --token <token> [--base-url <url>] [--agent <codex|claude|opencode|pi>]
+  login --token <token> [--base-url <url>] [--agent <codex|claude|opencode|pi|cursor|gemini>]
       Salva il PAT/JWT e installa l'adattatore per l'agent scelto.
 
   list [--query <q>]
       Lista le skill disponibili nel marketplace di RoboGarage.
+
+  init <nome> [--kind skill|agent|plugin]
+      Scaffolla una nuova skill locale con tutti i file richiesti.
 
   import <owner/skill> [--name <n>] [--visibility public|private]
       Scarica una skill da RoboGarage e la salva localmente.
@@ -63,16 +70,18 @@ Comandi:
       Valida una skill tramite l'API di RoboGarage.
 
   publish <cartella> [--name <n>] [--visibility public|private] [--kind skill|agent|plugin]
-      Pubblica una cartella locale (con SKILL.md) su RoboGarage.
+      Pubblica una cartella locale (con SKILL.md) su RoboGarage, con validazione automatica.
 
 Esempi:
   robogarage login --token rk_abc123 --agent codex
   robogarage list
+  robogarage init mia-skill --kind skill
   robogarage import leonardo/mia-skill
   robogarage validate leonardo/mia-skill --target claude
   robogarage publish ./mia-skill --visibility public --kind skill
 
 Documentazione: https://github.com/Uranio/robogarage-plugin
+Progetto free di Leonardo Martellini — MIT License
 `);
 }
 

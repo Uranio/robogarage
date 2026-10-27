@@ -9,6 +9,7 @@ export interface RoboGarageConfig {
   baseUrl: string;
   token?: string;
   username?: string;
+  agent?: 'codex' | 'claude' | 'opencode' | 'pi' | 'cursor' | 'gemini';
 }
 
 const DEFAULT_CONFIG: RoboGarageConfig = {

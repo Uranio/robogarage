@@ -1,7 +1,11 @@
 /**
- * Adattatore Claude Code.
- * Claude Code carica skill da ~/.claude/skills/<nome>/SKILL.md
- * e plugin da ~/.claude-plugin/plugin.json.
+ * Adattatore Claude Code (Anthropic).
+ *
+ * Claude Code usa lo standard "Agent Skills" aperto (https://agentskills.io).
+ * Le skill sono cartelle in ~/.claude/skills/<nome>/ con un file SKILL.md
+ * contenente frontmatter YAML e istruzioni.
+ *
+ * Riferimento: https://code.claude.com/docs/en/skills.md
  */
 
 import { RoboGarageClient } from '../client.js';
@@ -29,24 +33,24 @@ tools: [read, write, edit, bash]
 
 # ${name}
 
-Skill generata da RoboGarage Plugin.
+Skill RoboGarage per Claude Code.
 
 ## Connessione RoboGarage
 
 Questa skill è collegata al tuo account RoboGarage.
 
 **Base URL:** \`${baseUrl}\`
-**Token:** \`${token.slice(0, 8)}...\` (hashato in locale)
+**Token:** \`${token.slice(0, 8)}...\` (configurato in ~/.robogarage/config.json)
 
 ## Operazioni disponibili
 
 - \`robogarage import <skill>\` — importa una skill da RoboGarage
-- \`robogarage publish <cartella>\` — pubblica una skill su RoboGarage
-- \`robogarage validate <skill>\` — valida una skill tramite l'API RoboGarage
+- \`robogarage publish <cartella>\` — pubblica una skill locale su RoboGarage
+- \`robogarage validate <skill>\` — valida una skill tramite l'API di RoboGarage
 
 ## Istruzioni
 
-1. Configura il token: \`robogarage login --token <il_tuo_token>\`
+1. Configura il token: \`robogarage login --token <il_tuo_token> --agent claude\`
 2. Lista le skill disponibili: \`robogarage list\`
 3. Importa una skill: \`robogarage import owner/skill-name\`
 
@@ -68,7 +72,7 @@ export async function installClaude(
   fs.writeFileSync(path.join(dir, 'SKILL.md'), md, { mode: 0o644 });
 
   console.log(`✓ Skill installata in ${dir}/SKILL.md`);
-  console.log(`  Caricala in Claude Code con: /skills load ${skillName}`);
+  console.log(`  Caricala in Claude Code con: /skill ${skillName}`);
 }
 
 export async function loginClaude(token: string, baseUrl?: string): Promise<void> {
@@ -80,7 +84,7 @@ export async function loginClaude(token: string, baseUrl?: string): Promise<void
   const c = new RoboGarageClient(config.baseUrl, token);
   try {
     await c.health();
-    console.log(`✓ Collegato a RoboGarage (${config.baseUrl})`);
+    console.log(`✓ Autenticato su RoboGarage (${config.baseUrl})`);
   } catch (e: any) {
     console.error(`✗ Impossibile contattare RoboGarage: ${e.message}`);
     process.exit(1);

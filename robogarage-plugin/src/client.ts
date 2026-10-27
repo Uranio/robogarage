@@ -1,7 +1,7 @@
 /**
- * RoboGarage API client.
- * Usa un token (PAT o JWT) per autenticarsi contro il backend di RoboGarage.
- * Espone le operazioni necessarie al plugin: validate, import, create repo, list, marketplace.
+ * RoboGarage API Client.
+ * Comunica con il backend di RoboGarage usando un Personal Access Token (PAT) o JWT.
+ * Espone tutte le operazioni necessarie al plugin: validate, import, create repo, list, marketplace, health.
  */
 
 export interface ValidateOptions {
@@ -41,13 +41,25 @@ export interface MarketplaceItem {
   owner: string;
 }
 
+export interface TokenInfo {
+  id: number;
+  name: string;
+  prefix: string;
+  scopes: string;
+  expires_at: string | null;
+  last_used_at: string | null;
+  revoked: number;
+  created_at: string;
+}
+
 export class RoboGarageClient {
   constructor(private baseUrl: string, private token: string) {}
 
-  private headers(): Record<string, string> {
+  private headers(extra?: Record<string, string>): Record<string, string> {
     return {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${this.token}`,
+      ...extra,
     };
   }
 
@@ -64,10 +76,17 @@ export class RoboGarageClient {
       throw new Error(`RoboGarage API ${res.status}: ${body || res.statusText}`);
     }
     if (res.status === 204) return undefined as T;
-    return res.json() as Promise<T>;
+    const contentType = res.headers.get('content-type') || '';
+    if (contentType.includes('application/json')) {
+      return res.json() as Promise<T>;
+    }
+    return res.text() as unknown as T;
   }
 
-  /** Valida una skill/plugin tramite l'API di RoboGarage. */
+  async health(): Promise<{ ok: boolean; time: string }> {
+    return this.request<{ ok: boolean; time: string }>('/api/health');
+  }
+
   async validate(
     repoId: number,
     opts: ValidateOptions = {}
@@ -81,7 +100,6 @@ export class RoboGarageClient {
     );
   }
 
-  /** Importa una SKILL.md incollata in un repository RoboGarage. */
   async importPaste(params: {
     owner: string;
     skill_md: string;
@@ -94,7 +112,6 @@ export class RoboGarageClient {
     });
   }
 
-  /** Crea un nuovo repository skill/agent/plugin su RoboGarage. */
   async createRepo(params: {
     owner: string;
     name: string;
@@ -109,19 +126,33 @@ export class RoboGarageClient {
     });
   }
 
-  /** Lista i repository visibili all'utente. */
   async listRepos(q?: string): Promise<RepoRow[]> {
     const query = q ? `?q=${encodeURIComponent(q)}` : '';
     return this.request<RepoRow[]>(`/api/repos${query}`);
   }
 
-  /** Ottiene il marketplace JSON (skill pubbliche validate). */
   async marketplace(): Promise<MarketplaceItem[]> {
     return this.request<MarketplaceItem[]>('/api/marketplace.json');
   }
 
-  /** Healthcheck del backend. */
-  async health(): Promise<{ ok: boolean; time: string }> {
-    return this.request<{ ok: boolean; time: string }>('/api/health');
+  async createToken(params: {
+    name: string;
+    scopes?: string;
+    expires_in_days?: number;
+  }): Promise<{ token: string; prefix: string; id: number; name: string; scopes: string; expires_at: string | null }> {
+    return this.request('/api/users/tokens', {
+      method: 'POST',
+      body: JSON.stringify(params),
+    });
+  }
+
+  async listTokens(): Promise<TokenInfo[]> {
+    return this.request<TokenInfo[]>('/api/users/tokens');
+  }
+
+  async revokeToken(id: number): Promise<{ ok: boolean }> {
+    return this.request<{ ok: boolean }>(`/api/users/tokens/${id}`, {
+      method: 'DELETE',
+    });
   }
 }

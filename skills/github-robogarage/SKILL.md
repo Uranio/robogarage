@@ -386,6 +386,76 @@ curl -s -X POST https://robogarage-back2.onrender.com/api/repos \
 
 ---
 
+## 13. RoboGarage Plugin per agent AI
+
+Il plugin **robogarage-plugin** permette di collegare qualsiasi agent AI (Codex, Claude Code, OpenCode/Crush, Pi, Cursor, Gemini) al tuo account RoboGarage e automatizzare import, publish e validazione di skill.
+
+### Repository del plugin
+`https://github.com/Uranio/robogarage-plugin`
+
+### Installazione del plugin
+
+```bash
+# Clona il repository
+git clone https://github.com/Uranio/robogarage-plugin.git
+cd robogarage-plugin
+
+# Installa e build
+npm install
+npm run build
+
+# Link globale (opzionale)
+npm link
+```
+
+### Configurazione
+
+Ottieni un Personal Access Token (PAT) da RoboGarage (vedi sezione 12), poi configura il plugin:
+
+```bash
+robogarage login --token <IL_TUO_PAT> --agent codex
+```
+
+Agent supportati: `codex`, `claude`, `opencode`, `pi`, `cursor`, `gemini`.
+
+### Comandi del plugin
+
+| Comando | Descrizione |
+|---------|-------------|
+| `robogarage login --token <TOKEN> --agent <agent>` | Salva il token e installa l'adattatore |
+| `robogarage list [--query <q>]` | Lista skill nel marketplace RoboGarage |
+| `robogarage init <nome> [--kind <tipo>]` | Scaffolla una nuova skill locale |
+| `robogarage import <owner/skill>` | Scarica una skill da RoboGarage |
+| `robogarage validate <owner/skill> [--target <target>]` | Valida una skill via API RoboGarage |
+| `robogarage publish <cartella>` | Pubblica una cartella locale su RoboGarage |
+
+### Esempio di flusso completo
+
+```bash
+# 1. Login con il PAT
+robogarage login --token rk_abc123 --agent codex
+
+# 2. Crea una nuova skill locale
+robogarage init mia-skill --kind skill
+
+# 3. Valida su RoboGarage (prima di pubblicare)
+robogarage validate leonardo/mia-skill --target claude
+
+# 4. Pubblica su RoboGarage
+robogarage publish ./mia-skill --visibility public --kind skill
+
+# 5. Importa una skill da un altro utente
+robogarage import neo/web-scraper
+```
+
+### Sicurezza
+
+- Il token viene salvato in `~/.robogarage/config.json` con permessi `600`
+- Il token non è mai memorizzato in chiaro sul server (solo hash scrypt)
+- Puoi revocare il token in qualsiasi momento da RoboGarage
+
+---
+
 ## Come installare questa skill
 
 Da terminale, dentro una copia locale di RoboGarage:

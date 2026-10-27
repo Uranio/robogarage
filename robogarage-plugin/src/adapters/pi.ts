@@ -1,6 +1,8 @@
 /**
  * Adattatore Pi coding agent.
- * Pi usa skill con SKILL.md e tool definiti nelle skill.
+ *
+ * Pi usa skill con SKILL.md in ~/.pi/skills/<nome>/ seguendo lo standard
+ * Agent Skills con frontmatter YAML.
  */
 
 import { RoboGarageClient } from '../client.js';
@@ -68,7 +70,7 @@ export async function loginPi(token: string, baseUrl?: string): Promise<void> {
   const c = new RoboGarageClient(config.baseUrl, token);
   try {
     await c.health();
-    console.log(`✓ Collegato a RoboGarage (${config.baseUrl})`);
+    console.log(`✓ Autenticato su RoboGarage (${config.baseUrl})`);
   } catch (e: any) {
     console.error(`✗ Impossibile contattare RoboGarage: ${e.message}`);
     process.exit(1);

@@ -1,30 +1,58 @@
 {
   "name": "robogarage-plugin",
   "version": "1.0.0",
-  "description": "Plugin ufficiale RoboGarage per collegare Codex, Claude Code, OpenCode, Pi e altri agent al tuo account RoboGarage e automatizzare skill, import, publish e validazione.",
+  "description": "RoboGarage plugin per collegare Codex, Claude Code, OpenCode/Crush, Pi, Cursor e Gemini al tuo account RoboGarage. Automatizza import, publish e validazione di skill tramite Personal Access Token.",
   "bin": {
     "robogarage": "./dist/index.js"
   },
   "type": "module",
+  "exports": {
+    ".": "./dist/index.js",
+    "./client": "./dist/client.js",
+    "./config": "./dist/config.js"
+  },
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist/",
+    "README.md",
+    "LICENSE"
+  ],
   "scripts": {
     "build": "tsc",
     "start": "node dist/index.js",
-    "dev": "tsx src/index.ts"
+    "dev": "tsx src/index.ts",
+    "postinstall": "node -e \"console.log('RoboGarage plugin installato. Esegui: robogarage login --token <IL_TUO_TOKEN> --agent <codex|claude|opencode|pi|cursor|gemini>')\""
   },
-  "dependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Uranio/robogarage-plugin.git"
+  },
+  "keywords": [
+    "robogarage",
+    "codex",
+    "claude-code",
+    "opencode",
+    "crush",
+    "pi",
+    "cursor",
+    "gemini",
+    "skill",
+    "plugin",
+    "automation",
+    "ai-agent"
+  ],
+  "author": "Leonardo Martellini",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Uranio/robogarage-plugin/issues"
+  },
+  "homepage": "https://github.com/Uranio/robogarage-plugin#readme",
+  "engines": {
+    "node": ">=18"
+  },
   "devDependencies": {
     "@types/node": "^22.0.0",
     "typescript": "^5.5.0",
     "tsx": "^4.19.0"
-  },
-  "engines": {
-    "node": ">=18"
-  },
-  "keywords": ["robogarage", "codex", "claude", "opencode", "pi", "skill", "plugin", "automation"],
-  "author": "Leonardo Martellini",
-  "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/Uranio/robogarage-plugin.git"
   }
 }

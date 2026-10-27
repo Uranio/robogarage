@@ -71,4 +71,10 @@ export const api = {
   createPull: (p: any) => req('/api/pulls', { method: 'POST', body: JSON.stringify(p) }),
   mergePull: (id: number) => req(`/api/pulls/${id}/merge`, { method: 'POST' }),
   pullDiff: (id: number) => req(`/api/pulls/${id}/diff`),
+
+  // --- Personal Access Token (PAT) ---
+  createToken: (params: { name: string; scopes?: string; expires_in_days?: number }) =>
+    req('/api/users/tokens', { method: 'POST', body: JSON.stringify(params) }),
+  listTokens: () => req<{ id: number; name: string; prefix: string; scopes: string; expires_at: string | null; last_used_at: string | null; revoked: number; created_at: string }[]>('/api/users/tokens'),
+  revokeToken: (id: number) => req<{ ok: boolean }>(`/api/users/tokens/${id}`, { method: 'DELETE' }),
 };

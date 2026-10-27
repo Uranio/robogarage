@@ -1,19 +1,21 @@
 /**
- * Comando: robogarage login --token <token> [--base-url <url>] [--agent <codex|claude|opencode|pi>]
+ * Comando: robogarage login --token <token> [--base-url <url>] [--agent <codex|claude|opencode|pi|cursor|gemini>]
  * Salva il PAT/JWT in ~/.robogarage/config.json e installa l'adattatore per l'agent scelto.
  */
 
 import { RoboGarageClient } from '../client.js';
 import { saveConfig, loadConfig } from '../config.js';
-import { loginCodex } from '../adapters/codex.js';
-import { loginClaude } from '../adapters/claude.js';
-import { loginOpenCode } from '../adapters/opencode.js';
-import { loginPi } from '../adapters/pi.js';
+import { loginCodex, installCodex } from '../adapters/codex.js';
+import { loginClaude, installClaude } from '../adapters/claude.js';
+import { loginOpenCode, installOpenCode } from '../adapters/opencode.js';
+import { loginPi, installPi } from '../adapters/pi.js';
+import { loginCursor, installCursor } from '../adapters/cursor.js';
+import { loginGemini, installGemini } from '../adapters/gemini.js';
 
 export async function loginCommand(args: string[]): Promise<void> {
   let token = '';
   let baseUrl: string | undefined;
-  let agent: 'codex' | 'claude' | 'opencode' | 'pi' | undefined;
+  let agent: 'codex' | 'claude' | 'opencode' | 'pi' | 'cursor' | 'gemini' | undefined;
 
   for (let i = 0; i < args.length; i++) {
     const a = args[i];
@@ -45,13 +47,33 @@ export async function loginCommand(args: string[]): Promise<void> {
 
   if (agent) {
     switch (agent) {
-      case 'codex': await loginCodex(token, config.baseUrl); break;
-      case 'claude': await loginClaude(token, config.baseUrl); break;
-      case 'opencode': await loginOpenCode(token, config.baseUrl); break;
-      case 'pi': await loginPi(token, config.baseUrl); break;
+      case 'codex':
+        await loginCodex(token, config.baseUrl);
+        await installCodex(client);
+        break;
+      case 'claude':
+        await loginClaude(token, config.baseUrl);
+        await installClaude(client, 'robogarage', 'Skill RoboGarage collegata al tuo account');
+        break;
+      case 'opencode':
+        await loginOpenCode(token, config.baseUrl);
+        await installOpenCode(client, 'robogarage', 'Skill RoboGarage collegata al tuo account');
+        break;
+      case 'pi':
+        await loginPi(token, config.baseUrl);
+        await installPi(client, 'robogarage', 'Skill RoboGarage collegata al tuo account');
+        break;
+      case 'cursor':
+        await loginCursor(token, config.baseUrl);
+        await installCursor(client, 'robogarage', 'Skill RoboGarage collegata al tuo account');
+        break;
+      case 'gemini':
+        await loginGemini(token, config.baseUrl);
+        await installGemini(client, 'robogarage', 'Skill RoboGarage collegata al tuo account');
+        break;
     }
   } else {
-    console.log('\nAgent supportati: --agent codex | claude | opencode | pi');
+    console.log('\n🤖 Agent supportati: --agent codex | claude | opencode | pi | cursor | gemini');
     console.log('Esempio: robogarage login --token xxx --agent codex');
   }
 }

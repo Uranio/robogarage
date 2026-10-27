@@ -1,7 +1,11 @@
 /**
- * Adattatore OpenCode.
- * OpenCode carica skill da ~/.config/opencode/skills/<nome>/SKILL.md
- * e hook da ~/.config/opencode/hooks/*.{ts,js}
+ * Adattatore OpenCode / Crush (Charmbracelet).
+ *
+ * OpenCode è diventato Crush (charmbracelet/crush). Supporta skill in
+ * ~/.config/opencode/skills/<nome>/SKILL.md e estensione tramite MCP
+ * (http, stdio, sse).
+ *
+ * Riferimento: https://github.com/charmbracelet/crush
  */
 
 import { RoboGarageClient } from '../client.js';
@@ -34,12 +38,12 @@ tools: [read, write, edit, bash]
 
 # ${name}
 
-Skill RoboGarage per OpenCode.
+Skill RoboGarage per OpenCode / Crush.
 
 ## Configurazione
 
 **Base URL:** \`${baseUrl}\`
-**Token:** \`${token.slice(0, 8)}...\`
+**Token:** \`${token.slice(0, 8)}...\` (configurato in ~/.robogarage/config.json)
 
 ## Comandi
 
@@ -76,7 +80,7 @@ export async function loginOpenCode(token: string, baseUrl?: string): Promise<vo
   const c = new RoboGarageClient(config.baseUrl, token);
   try {
     await c.health();
-    console.log(`✓ Collegato a RoboGarage (${config.baseUrl})`);
+    console.log(`✓ Autenticato su RoboGarage (${config.baseUrl})`);
   } catch (e: any) {
     console.error(`✗ Impossibile contattare RoboGarage: ${e.message}`);
     process.exit(1);

@@ -1,6 +1,7 @@
 /**
  * Comando: robogarage publish <cartella> [--name <n>] [--visibility public|private] [--kind skill|agent|plugin]
  * Pubblica una cartella locale (con SKILL.md) su RoboGarage come nuovo repository.
+ * Prima di pubblicare, valida la skill tramite l'API di RoboGarage.
  */
 
 import { RoboGarageClient } from '../client.js';
@@ -53,15 +54,35 @@ export async function publishCommand(args: string[]): Promise<void> {
     const repoName = name || extractNameFromFrontmatter(skillMd) || path.basename(absFolder);
     const description = extractDescriptionFromFrontmatter(skillMd) || '';
 
+    console.log(`📦 Creazione repository ${repoName}...`);
+
     const repo = await client.createRepo({
       owner: config.username || '',
       name: repoName,
       description,
       visibility,
       kind,
+      plugin_target: kind === 'plugin' ? 'claude' : undefined,
     });
 
     console.log(`✓ Repository creato: ${repo.owner}/${repo.name} (${repo.visibility})`);
+
+    // Valida la skill prima di importarla
+    console.log(`🔍 Validazione skill in corso...`);
+    try {
+      const report = await client.validate(repo.id, { ref: repo.default_branch });
+      if (!report.ok) {
+        console.log(`⚠️  La skill ha errori di validazione:`);
+        for (const err of report.errors ?? []) {
+          console.log(`   ✗ ${err.path ? err.path + ' — ' : ''}${err.message}`);
+        }
+        console.log(`   Importo comunque, ma ti consiglio di correggere gli errori.`);
+      } else {
+        console.log(`✓ Skill valida`);
+      }
+    } catch (e: any) {
+      console.log(`⚠️  Impossibile validare: ${e.message}`);
+    }
 
     // Importa la SKILL.md nel nuovo repo
     await client.importPaste({
