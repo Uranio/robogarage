@@ -60,6 +60,8 @@ export default function TermLayout() {
             <button className="ghost" style={{ padding: '4px 10px', fontSize: 12 }} onClick={toggleTheme} title="Toggle light / dark">
               {theme === 'dark' ? '◐ light' : '◑ dark'}
             </button>
+            <Link to="/privacy" style={{ fontSize: 11, marginLeft: 8, color: 'var(--dim)' }}>Privacy</Link>
+            <Link to="/terms" style={{ fontSize: 11, marginLeft: 8, color: 'var(--dim)' }}>Termini</Link>
             {me ? (
               <span className="row">
                 <Avatar user={{ username: me, avatar_url: myAvatar }} size={20} />
@@ -116,7 +118,26 @@ export default function TermLayout() {
         </div>
       )}
 
-      <div className="wrap"><Outlet /></div>
+      <div className="wrap">
+        <Outlet />
+        <footer style={{
+          marginTop: 40,
+          padding: 20,
+          borderTop: '1px solid var(--line)',
+          display: 'flex',
+          justifyContent: 'center',
+          gap: 24,
+          fontSize: 12,
+          color: 'var(--dim)',
+          flexWrap: 'wrap',
+        }}>
+          <Link to="/privacy" style={{ color: 'var(--dim)', textDecoration: 'none' }}>Privacy</Link>
+          <span style={{ color: 'var(--line)' }}>•</span>
+          <Link to="/terms" style={{ color: 'var(--dim)', textDecoration: 'none' }}>Termini</Link>
+          <span style={{ color: 'var(--line)' }}>•</span>
+          <span>© 2026 Leonardo Martellini — RoboGarage (free, MIT)</span>
+        </footer>
+      </div>
     </>
   );
 }
