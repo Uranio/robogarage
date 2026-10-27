@@ -11,6 +11,7 @@ const SECTIONS = [
   { id: 'validate', title: 'Validare una skill' },
   { id: 'marketplace', title: 'Marketplace e installazione' },
   { id: 'agents', title: 'Collegare il tuo agent' },
+  { id: 'plugin', title: 'Plugin RoboGarage' },
   { id: 'tokens', title: 'Personal Access Token (PAT)' },
   { id: 'legal', title: 'Privacy e termini' },
 ];
@@ -253,6 +254,153 @@ export default function Docs() {
             </ul>
             <p className="amb" style={{ fontSize: 12 }}>
               ⚠️ Copia subito il token: dopo la creazione non è più leggibile.
+            </p>
+          </>
+        );
+      case 'plugin':
+        return (
+          <>
+            <h2>Plugin RoboGarage</h2>
+            <p>
+              Il <b>plugin ufficiale</b> è un CLI da riga di comando che collega i tuoi
+              agent AI al tuo account RoboGarage e automatizza import, publish e
+              validazione di skill. È distribuito come progetto separato su GitHub:
+              <a href="https://github.com/Uranio/robogarage-plugin" target="_blank" rel="noopener noreferrer">
+                github.com/Uranio/robogarage-plugin
+              </a>
+            </p>
+
+            <h3>1. Installazione</h3>
+            <div className="code" style={{ fontSize: 12, whiteSpace: 'pre-wrap', marginBottom: 10 }}>
+              git clone https://github.com/Uranio/robogarage-plugin.git
+              cd robogarage-plugin
+              npm install
+              npm run build
+              # Opzionale: link globale per usare il comando ovunque
+              npm link
+            </div>
+
+            <h3>2. Configurazione</h3>
+            <p>
+              Ottieni un <b>Personal Access Token (PAT)</b> dalla pagina
+              <Link to="/plugins">Plugin</a> di RoboGarage (mostrato una sola volta),
+              poi configura il plugin:
+            </p>
+            <div className="code" style={{ fontSize: 12, whiteSpace: 'pre-wrap', marginBottom: 10 }}>
+              ./dist/index.js login --token &lt;IL_TUO_PAT&gt; --agent codex
+            </div>
+            <p>
+              Sostituisci <code>&lt;IL_TUO_PAT&gt;</code> con il token copiato e
+              <code>codex</code> con l'agent che usi.
+            </p>
+
+            <h3>3. Agent supportati</h3>
+            <table style={{ width: '100%', fontSize: 12, borderCollapse: 'collapse', marginTop: 8 }}>
+              <thead>
+                <tr style={{ textAlign: 'left', color: 'var(--dim)', borderBottom: '1px solid var(--line)' }}>
+                  <th style={{ padding: '6px 0' }}>Agent</th>
+                  <th style={{ padding: '6px 0' }}>Flag <code>--agent</code></th>
+                  <th style={{ padding: '6px 0' }}>Directory skill installata</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr style={{ borderBottom: '1px solid var(--line)' }}>
+                  <td style={{ padding: '6px 0', color: 'var(--txt)' }}>Codex CLI</td>
+                  <td style={{ padding: '6px 0', fontFamily: 'monospace' }}>codex</td>
+                  <td style={{ padding: '6px 0', fontFamily: 'monospace' }}>~/.codex/skills/&lt;nome&gt;/SKILL.md</td>
+                </tr>
+                <tr style={{ borderBottom: '1px solid var(--line)' }}>
+                  <td style={{ padding: '6px 0', color: 'var(--txt)' }}>Claude Code</td>
+                  <td style={{ padding: '6px 0', fontFamily: 'monospace' }}>claude</td>
+                  <td style={{ padding: '6px 0', fontFamily: 'monospace' }}>~/.claude/skills/&lt;nome&gt;/SKILL.md</td>
+                </tr>
+                <tr style={{ borderBottom: '1px solid var(--line)' }}>
+                  <td style={{ padding: '6px 0', color: 'var(--txt)' }}>Crush / OpenCode</td>
+                  <td style={{ padding: '6px 0', fontFamily: 'monospace' }}>crush</td>
+                  <td style={{ padding: '6px 0', fontFamily: 'monospace' }}>~/.config/crush/skills/&lt;nome&gt;/SKILL.md</td>
+                </tr>
+                <tr style={{ borderBottom: '1px solid var(--line)' }}>
+                  <td style={{ padding: '6px 0', color: 'var(--txt)' }}>Pi coding agent</td>
+                  <td style={{ padding: '6px 0', fontFamily: 'monospace' }}>pi</td>
+                  <td style={{ padding: '6px 0', fontFamily: 'monospace' }}>~/.agents/skills/&lt;nome&gt;/SKILL.md</td>
+                </tr>
+                <tr style={{ borderBottom: '1px solid var(--line)' }}>
+                  <td style={{ padding: '6px 0', color: 'var(--txt)' }}>Cursor</td>
+                  <td style={{ padding: '6px 0', fontFamily: 'monospace' }}>cursor</td>
+                  <td style={{ padding: '6px 0', fontFamily: 'monospace' }}>~/.cursor/skills/&lt;nome&gt;/SKILL.md</td>
+                </tr>
+                <tr style={{ borderBottom: '1px solid var(--line)' }}>
+                  <td style={{ padding: '6px 0', color: 'var(--txt)' }}>Gemini CLI</td>
+                  <td style={{ padding: '6px 0', fontFamily: 'monospace' }}>gemini</td>
+                  <td style={{ padding: '6px 0', fontFamily: 'monospace' }}>~/.gemini/skills/&lt;nome&gt;/SKILL.md</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <h3>4. Comandi disponibili</h3>
+            <table style={{ width: '100%', fontSize: 12, borderCollapse: 'collapse', marginTop: 8 }}>
+              <thead>
+                <tr style={{ textAlign: 'left', color: 'var(--dim)', borderBottom: '1px solid var(--line)' }}>
+                  <th style={{ padding: '6px 0' }}>Comando</th>
+                  <th style={{ padding: '6px 0' }}>Descrizione</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr style={{ borderBottom: '1px solid var(--line)' }}>
+                  <td style={{ padding: '6px 0', fontFamily: 'monospace', color: 'var(--grn)' }}>login</td>
+                  <td style={{ padding: '6px 0' }}>Salva il PAT e installa l'adattatore per l'agent scelto</td>
+                </tr>
+                <tr style={{ borderBottom: '1px solid var(--line)' }}>
+                  <td style={{ padding: '6px 0', fontFamily: 'monospace', color: 'var(--grn)' }}>list</td>
+                  <td style={{ padding: '6px 0' }}>Lista le skill disponibili nel marketplace RoboGarage</td>
+                </tr>
+                <tr style={{ borderBottom: '1px solid var(--line)' }}>
+                  <td style={{ padding: '6px 0', fontFamily: 'monospace', color: 'var(--grn)' }}>init</td>
+                  <td style={{ padding: '6px 0' }}>Scaffolla una nuova skill locale con tutti i file richiesti</td>
+                </tr>
+                <tr style={{ borderBottom: '1px solid var(--line)' }}>
+                  <td style={{ padding: '6px 0', fontFamily: 'monospace', color: 'var(--grn)' }}>import</td>
+                  <td style={{ padding: '6px 0' }}>Scarica una skill da RoboGarage e la salva localmente</td>
+                </tr>
+                <tr style={{ borderBottom: '1px solid var(--line)' }}>
+                  <td style={{ padding: '6px 0', fontFamily: 'monospace', color: 'var(--grn)' }}>validate</td>
+                  <td style={{ padding: '6px 0' }}>Valida una skill tramite l'API di RoboGarage</td>
+                </tr>
+                <tr style={{ borderBottom: '1px solid var(--line)' }}>
+                  <td style={{ padding: '6px 0', fontFamily: 'monospace', color: 'var(--grn)' }}>publish</td>
+                  <td style={{ padding: '6px 0' }}>Pubblica una cartella locale su RoboGarage (con validazione automatica)</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <h3>5. Esempio di flusso completo</h3>
+            <div className="code" style={{ fontSize: 12, whiteSpace: 'pre-wrap', marginBottom: 10 }}>
+              # 1. Installa il plugin
+              git clone https://github.com/Uranio/robogarage-plugin.git
+              cd robogarage-plugin
+              npm install && npm run build
+
+              # 2. Configura il token (crealo prima nella pagina /plugins di RoboGarage)
+              ./dist/index.js login --token rk_a1b2c3d4... --agent claude
+
+              # 3. Lista le skill disponibili
+              ./dist/index.js list
+
+              # 4. Importa una skill di un altro utente
+              ./dist/index.js import neo/web-scraper
+
+              # 5. Crea una skill locale e pubblicala
+              ./dist/index.js init mia-skill --kind skill
+              ./dist/index.js publish ./mia-skill --visibility public --kind skill
+
+              # 6. Valida una skill esistente
+              ./dist/index.js validate leonardo/mia-skill --target claude
+            </div>
+
+            <p className="dim" style={{ marginTop: 10, fontSize: 12 }}>
+              Il token viene salvato in <code>~/.robogarage/config.json</code> con permessi
+              <code>600</code> (solo lettura/scrittura per il proprietario). Non viene mai
+              inviato a terzi, solo al tuo backend RoboGarage.
             </p>
           </>
         );
