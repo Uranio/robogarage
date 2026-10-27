@@ -75,6 +75,6 @@ export const api = {
   // --- Personal Access Token (PAT) ---
   createToken: (params: { name: string; scopes?: string; expires_in_days?: number }) =>
     req('/api/users/tokens', { method: 'POST', body: JSON.stringify(params) }),
-  listTokens: () => req<{ id: number; name: string; prefix: string; scopes: string; expires_at: string | null; last_used_at: string | null; revoked: number; created_at: string }[]>('/api/users/tokens'),
-  revokeToken: (id: number) => req<{ ok: boolean }>(`/api/users/tokens/${id}`, { method: 'DELETE' }),
+  listTokens: () => req('/api/users/tokens') as Promise<{ id: number; name: string; prefix: string; scopes: string; expires_at: string | null; last_used_at: string | null; revoked: number; created_at: string }[]>,
+  revokeToken: (id: number) => req(`/api/users/tokens/${id}`, { method: 'DELETE' }) as Promise<{ ok: boolean }>,
 };
