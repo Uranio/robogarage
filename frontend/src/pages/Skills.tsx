@@ -20,7 +20,7 @@ export default function Skills() {
     <div style={{ paddingTop: 22 }}>
       <div className="dim"><span className="prompt">➜</span> ~ robogarage ls --sort recent</div>
       <div className="row" style={{ alignItems: 'baseline' }}>
-        <h2 style={{ marginBottom: 0 }}>skills, agents &amp; plugins <span className="blink grn">▊</span></h2>
+        <h2 style={{ marginBottom: 0 }}>skills, agents & plugins <span className="blink grn">▊</span></h2>
         <span className="grow" />
         <select value={kindF} onChange={(e) => setKindF(e.target.value)} style={{ maxWidth: 150 }}>
           <option value="all">all kinds</option>

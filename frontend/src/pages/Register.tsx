@@ -19,7 +19,6 @@ export default function Register() {
 
   useEffect(() => { if (me) nav('/'); }, [me, nav]);
 
-  // live username availability check (400ms debounce)
   useEffect(() => {
     const v = reg.username.trim().toLowerCase();
     if (!v) { setCheckUser(idleCheck); return; }
@@ -40,7 +39,6 @@ export default function Register() {
     return () => clearTimeout(timerU.current);
   }, [reg.username]);
 
-  // live email availability check (500ms debounce)
   useEffect(() => {
     const v = reg.email.trim().toLowerCase();
     if (!v) { setCheckMail(idleCheck); return; }
@@ -132,7 +130,7 @@ export default function Register() {
           <label className="grow"><div className="dim">Password (8+ chars)</div>
             <input type="password" value={reg.password} onChange={(e) => setReg({ ...reg, password: e.target.value })} placeholder="••••••" autoComplete="new-password" /></label>
           <label className="grow"><div className="dim">Confirm</div>
-            <input type="password" value={reg.confirm} onChange={(e) => setReg({ ...reg, confirm: e.target.value })} placeholder="••••••" autoComplete="new-password" /></label>
+            <input type="password" value={reg.confirm} onChange={(e) => setReg({ ...reg, confirm: e.target.value })} placeholder="••••••" autoComplete="new-password" onKeyDown={(e) => e.key === 'Enter' && register()} /></label>
         </div>
         <div>
           <div className="dim" style={{ marginBottom: 6 }}>Avatar color (fallback without image)</div>

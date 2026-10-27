@@ -5,7 +5,8 @@ import { useSession } from '../lib/session';
 
 export default function NewRepo() {
   const me = useSession();
-  const [f, setF] = useState({ name: '', description: '', visibility: 'public', kind: 'skill', plugin_target: 'claude' });  const [err, setErr] = useState('');
+  const [f, setF] = useState({ name: '', description: '', visibility: 'public', kind: 'skill', plugin_target: 'claude' });
+  const [err, setErr] = useState('');
   const [busy, setBusy] = useState(false);
   const nav = useNavigate();
 

@@ -18,13 +18,13 @@ export default function Landing() {
     <div style={{ textAlign: 'center', paddingTop: 30, paddingBottom: 30 }}>
       <div className="dim"><span className="prompt">$</span> ./robogarage --service</div>
       <h1 style={{ fontSize: 32, margin: '10px 0' }}>Every robot needs a garage<span className="blink grn">▊</span></h1>
-      <div className="dim">Skills, agents &amp; plugins — serviced, validated, ready to dance.</div>
+      <div className="dim">Skills, agents & plugins — serviced, validated, ready to dance.</div>
 
-      <div style={{ marginTop: 14 }}>
+      <div style={{ marginTop: 22 }}>
         <DancingRobot />
       </div>
 
-      <div className="row" style={{ justifyContent: 'center', marginTop: 26 }}>
+      <div className="row" style={{ justifyContent: 'center', marginTop: 20 }}>
         {me ? (
           <Link to="/new"><button className="amber">+ Create your skill</button></Link>
         ) : (

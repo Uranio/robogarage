@@ -6,53 +6,53 @@ export default function Privacy() {
       <div className="dim"><span className="prompt">➜</span> ~ robogarage privacy</div>
       <h1>Privacy Policy — RoboGarage</h1>
 
-      <p className="dim" style={{ fontSize: 13 }}><b>Ultimo aggiornamento:</b> 27 ottobre 2026</p>
-      <p className="dim" style={{ fontSize: 13 }}><b>Progetto:</b> RoboGarage — progetto free di <b>Leonardo Martellini</b></p>
+      <p className="dim" style={{ fontSize: 13 }}><b>Last updated:</b> October 27, 2026</p>
+      <p className="dim" style={{ fontSize: 13 }}><b>Project:</b> RoboGarage — free project by <b>Leonardo Martellini</b></p>
 
-      <h2>1. Titolare del trattamento</h2>
-      <p>RoboGarage è un progetto open source sviluppato da <b>Leonardo Martellini</b>. Il titolare del trattamento dei dati personali è il gestore dell'istanza su cui è deployata l'applicazione.</p>
+      <h2>1. Data Controller</h2>
+      <p>RoboGarage is an open source project developed by <b>Leonardo Martellini</b>. The data controller is the operator of the RoboGarage instance you are using.</p>
 
-      <h2>2. Dati raccolti</h2>
+      <h2>2. Data Collected</h2>
       <ul>
-        <li><b>Dati di registrazione:</b> username, email (opzionale), password (hashata con scrypt, mai conservata in chiaro).</li>
-        <li><b>Avatar:</b> immagine opzionale caricata dall'utente (max 2 MB).</li>
-        <li><b>Skill e repository:</b> contenuti pubblici o privati caricati dall'utente (SKILL.md, AGENT.md, script, codice).</li>
-        <li><b>Token di accesso (PAT):</b> hashati con scrypt, il valore in chiaro non viene mai memorizzato.</li>
-        <li><b>Log tecnici:</b> indirizzo IP, user-agent, timestamp (usati solo per sicurezza e rate limiting).</li>
+        <li><b>Registration data:</b> username, email (optional), password (hashed with scrypt, never stored in plaintext).</li>
+        <li><b>Avatar:</b> optional profile image uploaded by the user (max 2 MB).</li>
+        <li><b>Skills and repositories:</b> public or private content uploaded by the user (SKILL.md, AGENT.md, scripts, code).</li>
+        <li><b>Access tokens (PAT):</b> hashed with scrypt; the plaintext value is never stored.</li>
+        <li><b>Technical logs:</b> IP address, user-agent, timestamps (used only for security and rate limiting).</li>
       </ul>
 
-      <h2>3. Finalità del trattamento</h2>
+      <h2>3. Purpose of Processing</h2>
       <ul>
-        <li>Fornire l'accesso alla piattaforma RoboGarage (skill, agent, plugin).</li>
-        <li>Consentire l'import, la pubblicazione e la validazione di skill.</li>
-        <li>Autenticare e autorizzare l'accesso alle risorse (pubbliche e private).</li>
-        <li>Prevenire abusi (rate limit, brute force).</li>
+        <li>Provide access to the RoboGarage platform (skills, agents, plugins).</li>
+        <li>Allow import, publication, and validation of skills.</li>
+        <li>Authenticate and authorize access to resources (public and private).</li>
+        <li>Prevent abuse (rate limiting, brute force).</li>
       </ul>
 
-      <h2>4. Base giuridica</h2>
-      <p>Il trattamento si basa sul <b>consenso dell'interessato</b> (art. 6, par. 1, lett. a GDPR) e sull'esecuzione di un contratto (art. 6, par. 1, lett. b GDPR) per l'erogazione del servizio.</p>
+      <h2>4. Legal Basis</h2>
+      <p>Processing is based on <b>user consent</b> (Art. 6(1)(a) GDPR) and on the <b>performance of a contract</b> (Art. 6(1)(b) GDPR) for service provision.</p>
 
-      <h2>5. Conservazione dei dati</h2>
-      <p>I dati sono conservati per il tempo necessario all'erogazione del servizio. L'utente può richiedere la cancellazione del proprio account e dei dati associati in qualsiasi momento.</p>
+      <h2>5. Data Retention</h2>
+      <p>Data is kept for as long as necessary to provide the service. You may request deletion of your account and associated data at any time.</p>
 
-      <h2>6. Diritti dell'interessato</h2>
-      <p>Hai diritto di accedere, rettificare, cancellare, limitare il trattamento, portabilità dei dati e opposizione. Puoi esercitare tali diritti contattando il titolare all'indirizzo indicato nell'istanza RoboGarage che utilizzi.</p>
+      <h2>6. User Rights</h2>
+      <p>You have the right to access, rectify, erase, restrict processing, data portability, and object. You may exercise these rights by contacting the controller at the address indicated in the RoboGarage instance you are using.</p>
 
-      <h2>7. Trasferimento dei dati</h2>
-      <p>I dati restano all'interno dell'infrastruttura su cui è deployata l'istanza RoboGarage. Non sono trasferiti verso paesi terzi senza adeguate garanzie.</p>
+      <h2>7. Data Transfers</h2>
+      <p>Data remains within the infrastructure where the RoboGarage instance is hosted. It is not transferred to third countries without adequate safeguards.</p>
 
-      <h2>8. Cookie e tracciamento</h2>
-      <p>RoboGarage non utilizza cookie di profilazione. Sono possibili cookie tecnici di sessione (JWT memorizzati localmente nel browser).</p>
+      <h2>8. Cookies and Tracking</h2>
+      <p>RoboGarage does not use profiling cookies. Only technical session cookies may be used (JWT stored locally in the browser).</p>
 
-      <h2>9. Modifiche alla presente informativa</h2>
-      <p>La privacy policy può essere aggiornata. Le modifiche sono pubblicate in questa pagina con indicazione della data di ultimo aggiornamento.</p>
+      <h2>9. Changes to this Policy</h2>
+      <p>This privacy policy may be updated. Changes are published on this page with the last updated date.</p>
 
-      <h2>10. Contatti</h2>
-      <p>Per richieste relative alla privacy: contatta l'amministratore dell'istanza RoboGarage che stai utilizzando.</p>
+      <h2>10. Contacts</h2>
+      <p>For privacy requests: contact the administrator of the RoboGarage instance you are using.</p>
 
       <hr style={{ margin: '30px 0', border: 'none', borderTop: '1px solid var(--line)' }} />
       <p className="dim" style={{ fontSize: 12 }}>
-        © 2026 Leonardo Martellini. Tutti i diritti riservati. RoboGarage è distribuito sotto licenza MIT.
+        © 2026 Leonardo Martellini. All rights reserved. RoboGarage is distributed under the MIT license.
       </p>
     </div>
   );

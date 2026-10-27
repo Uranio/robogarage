@@ -29,10 +29,10 @@ export default function Plugins() {
     return (
       <div style={{ paddingTop: 22, maxWidth: 600, margin: '0 auto', textAlign: 'center' }}>
         <div className="dim"><span className="prompt">➜</span> ~ robogarage plugin</div>
-        <h2>Plugin RoboGarage</h2>
-        <p className="dim">Effettua il login per configurare il plugin e collegare il tuo agent.</p>
+        <h2>RoboGarage Plugin</h2>
+        <p className="dim">Log in to configure the plugin and connect your agent.</p>
         <div style={{ marginTop: 20 }}>
-          <Link to="/login"><button className="amber">Effettua il login →</button></Link>
+          <Link to="/login"><button className="amber">Log in →</button></Link>
         </div>
       </div>
     );
@@ -48,16 +48,16 @@ export default function Plugins() {
       const data = await api.listTokens();
       setTokens(data);
     } catch (e: any) {
-      setMsg(`✗ Impossibile caricare i token: ${e.message}`);
+      setMsg(`✗ Failed to load tokens: ${e.message}`);
     } finally {
       setLoading(false);
     }
   };
 
   const createToken = async () => {
-    if (!newTokenName.trim()) { setMsg('Inserisci un nome per il token'); return; }
+    if (!newTokenName.trim()) { setMsg('Enter a token name'); return; }
     const days = Number(newTokenDays);
-    if (!days || days < 1 || days > 3650) { setMsg('Giorni di scadenza non validi (1-3650)'); return; }
+    if (!days || days < 1 || days > 3650) { setMsg('Expiry days invalid (1-3650)'); return; }
     setLoading(true);
     try {
       const data = await api.createToken({
@@ -66,10 +66,10 @@ export default function Plugins() {
         expires_in_days: days,
       });
       setShowingToken({ token: data.token, prefix: data.prefix });
-      setMsg('✓ Token creato. Copialo subito: non sarà più mostrato.');
+      setMsg('✓ Token created. Copy it now: it will not be shown again.');
       await loadTokens();
     } catch (e: any) {
-      setMsg(`✗ Errore creazione token: ${e.message}`);
+      setMsg(`✗ Error creating token: ${e.message}`);
     } finally {
       setLoading(false);
     }
@@ -79,10 +79,10 @@ export default function Plugins() {
     setLoading(true);
     try {
       await api.revokeToken(id);
-      setMsg('✓ Token revocato.');
+      setMsg('✓ Token revoked.');
       await loadTokens();
     } catch (e: any) {
-      setMsg(`✗ Errore revoca: ${e.message}`);
+      setMsg(`✗ Revocation error: ${e.message}`);
     } finally {
       setLoading(false);
     }
@@ -91,30 +91,30 @@ export default function Plugins() {
   return (
     <div style={{ paddingTop: 22, maxWidth: 800, margin: '0 auto' }}>
       <div className="dim"><span className="prompt">➜</span> ~ robogarage plugin install</div>
-      <h2>RoboGarage Plugin — collega il tuo agent <span className="blink grn">▊</span></h2>
+      <h2>RoboGarage Plugin — connect your agent <span className="blink grn">▊</span></h2>
 
       <div className="panel pad" style={{ maxWidth: 760, display: 'grid', gap: 16, marginBottom: 20 }}>
 
-        {/* Sezione token */}
+        {/* Token section */}
         <div className="panel pad" style={{ display: 'grid', gap: 12 }}>
           <div className="row" style={{ alignItems: 'center', gap: 10 }}>
-            <span className="grn" style={{ fontWeight: 700 }}>🔐 Token Personali (PAT)</span>
+            <span className="grn" style={{ fontWeight: 700 }}>🔐 Personal Access Tokens (PAT)</span>
             <span className="grow" />
             <span className="dim" style={{ fontSize: 12 }}>
-              I PAT ti permettono di usare il plugin senza inserire username/password ogni volta.
+              PATs let you use the plugin without entering username/password every time.
             </span>
           </div>
 
           {showingToken && (
             <div className="panel pad" style={{ background: '#0b0d10', borderColor: 'var(--grn)' }}>
-              <div className="dim" style={{ fontSize: 12 }}>Il tuo token (mostrato una sola volta):</div>
+              <div className="dim" style={{ fontSize: 12 }}>Your token (shown once):</div>
               <div className="code" style={{ fontSize: 12, wordBreak: 'break-all' }}>{showingToken.token}</div>
               <div className="grn" style={{ fontSize: 12, marginTop: 6 }}>
-                ✓ Copiato il prefisso: {showingToken.prefix}
+                ✓ Prefix copied: {showingToken.prefix}
               </div>
               <div>
                 <button className="ghost" onClick={() => setShowingToken(null)} style={{ fontSize: 12, marginTop: 8 }}>
-                  Ho copiato, nascondi
+                  Copied, hide
                 </button>
               </div>
             </div>
@@ -124,7 +124,7 @@ export default function Plugins() {
             <input
               value={newTokenName}
               onChange={(e) => setNewTokenName(e.target.value)}
-              placeholder="Nome del token (es. render-deploy)"
+              placeholder="Token name (e.g. render-deploy)"
               style={{ flex: 1, minWidth: 150 }}
             />
             <input
@@ -133,26 +133,26 @@ export default function Plugins() {
               placeholder="90"
               style={{ width: 60 }}
             />
-            <span className="dim" style={{ fontSize: 12 }}>giorni</span>
+            <span className="dim" style={{ fontSize: 12 }}>days</span>
             <button className="amber" disabled={loading} onClick={createToken}>
-              {loading ? 'Creando…' : '+ Crea token'}
+              {loading ? 'Creating…' : '+ Create token'}
             </button>
           </div>
 
           {msg && <div className={msg.startsWith('✓') ? 'grn' : 'amb'} style={{ fontSize: 13 }}>{msg}</div>}
 
           <div>
-            <span className="dim" style={{ fontSize: 12 }}>Token esistenti:</span>
+            <span className="dim" style={{ fontSize: 12 }}>Existing tokens:</span>
             {tokens.length === 0 ? (
-              <div className="dim" style={{ fontSize: 12, fontStyle: 'italic' }}>Nessun token. Creane uno sopra.</div>
+              <div className="dim" style={{ fontSize: 12, fontStyle: 'italic' }}>No tokens. Create one above.</div>
             ) : (
               <table style={{ width: '100%', fontSize: 12, borderCollapse: 'collapse' }}>
                 <thead>
                   <tr style={{ textAlign: 'left', color: 'var(--dim)', borderBottom: '1px solid var(--line)' }}>
-                    <th style={{ padding: '6px 0' }}>Nome</th>
-                    <th style={{ padding: '6px 0' }}>Prefisso</th>
+                    <th style={{ padding: '6px 0' }}>Name</th>
+                    <th style={{ padding: '6px 0' }}>Prefix</th>
                     <th style={{ padding: '6px 0' }}>Scope</th>
-                    <th style={{ padding: '6px 0' }}>Scadenza</th>
+                    <th style={{ padding: '6px 0' }}>Expires</th>
                     <th style={{ padding: '6px 0' }}></th>
                   </tr>
                 </thead>
@@ -165,7 +165,7 @@ export default function Plugins() {
                       <td style={{ padding: '6px 0', color: 'var(--dim)' }}>{t.expires_at || '—'}</td>
                       <td style={{ padding: '6px 0' }}>
                         <button className="ghost" onClick={() => revokeToken(t.id)} style={{ fontSize: 11, color: 'var(--amb)' }}>
-                          Revoca
+                          Revoke
                         </button>
                       </td>
                     </tr>
@@ -176,10 +176,10 @@ export default function Plugins() {
           </div>
         </div>
 
-        {/* Sezione istruzioni agent */}
+        {/* Agent installation */}
         <div className="panel pad" style={{ display: 'grid', gap: 14 }}>
           <div className="row" style={{ alignItems: 'center', gap: 10 }}>
-            <span className="grn" style={{ fontWeight: 700 }}>🤖 Installa nel tuo agent</span>
+            <span className="grn" style={{ fontWeight: 700 }}>🤖 Install in your agent</span>
             <span className="grow" />
           </div>
 
@@ -197,18 +197,18 @@ export default function Plugins() {
           </div>
 
           <div className="panel pad" style={{ background: '#07090c', borderColor: 'var(--line)' }}>
-            <div className="dim" style={{ fontSize: 12, marginBottom: 8 }}>Comandi da eseguire nel terminale:</div>
+            <div className="dim" style={{ fontSize: 12, marginBottom: 8 }}>Terminal commands:</div>
             <div className="code" style={{ fontSize: 12, whiteSpace: 'pre-wrap', marginBottom: 10 }}>
-              # 1. Installa il plugin
+              # 1. Install the plugin
               git clone https://github.com/Uranio/robogarage-plugin.git
               cd robogarage-plugin
               npm install
               npm run build
 
-              # 2. Configura il token (usa il PAT creato sopra)
+              # 2. Configure the token (use the PAT created above)
               ./dist/index.js login --token IL_TUO_TOKEN --agent {agent}
 
-              # 3. Usa i comandi
+              # 3. Use the commands
               ./dist/index.js list
               ./dist/index.js import owner/skill-name
               ./dist/index.js validate owner/skill --target {agent}
@@ -217,7 +217,7 @@ export default function Plugins() {
 
             {agent === 'codex' && (
               <div style={{ display: 'grid', gap: 8 }}>
-                <div className="dim" style={{ fontSize: 12 }}>Configurazione Codex aggiuntiva:</div>
+                <div className="dim" style={{ fontSize: 12 }}>Additional Codex configuration:</div>
                 <div className="code" style={{ fontSize: 12 }}>
                   codex plugin marketplace add https://github.com/Uranio/robogarage-plugin
                   codex plugin install robogarage@robogarage-plugin
@@ -229,9 +229,9 @@ export default function Plugins() {
         </div>
 
         <div className="dim" style={{ fontSize: 12, borderTop: '1px solid var(--line)', paddingTop: 10 }}>
-          Progetto free di <b>Leonardo Martellini</b>. Vedi
-          <Link to="/privacy">Privacy</Link> e
-          <Link to="/terms">Termini</Link>.
+          Free project by <b>Leonardo Martellini</b>. See
+          <Link to="/privacy">Privacy</Link> and
+          <Link to="/terms">Terms</Link>.
         </div>
       </div>
     </div>

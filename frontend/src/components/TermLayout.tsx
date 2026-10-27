@@ -51,6 +51,7 @@ export default function TermLayout() {
             <NavLink to="/" end className={({ isActive }) => (isActive ? 'on' : '')}>~/home</NavLink>
             <NavLink to="/skills" className={({ isActive }) => (isActive ? 'on' : '')}>~/skills</NavLink>
             <NavLink to="/import" className={({ isActive }) => (isActive ? 'on' : '')}>↓ import</NavLink>
+            <NavLink to="/plugins" className={({ isActive }) => (isActive ? 'on' : '')}>🔌 plugin</NavLink>
             <NavLink to="/new" className={({ isActive }) => (isActive ? 'on' : '')}>+ new</NavLink>
           </nav>
 

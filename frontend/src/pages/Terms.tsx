@@ -4,58 +4,58 @@ export default function Terms() {
   return (
     <div style={{ paddingTop: 22, maxWidth: 700, lineHeight: 1.6 }}>
       <div className="dim"><span className="prompt">➜</span> ~ robogarage terms</div>
-      <h1>Termini di Servizio — RoboGarage</h1>
+      <h1>Terms of Service — RoboGarage</h1>
 
-      <p className="dim" style={{ fontSize: 13 }}><b>Ultimo aggiornamento:</b> 27 ottobre 2026</p>
-      <p className="dim" style={{ fontSize: 13 }}><b>Progetto:</b> RoboGarage — progetto free di <b>Leonardo Martellini</b></p>
+      <p className="dim" style={{ fontSize: 13 }}><b>Last updated:</b> October 27, 2026</p>
+      <p className="dim" style={{ fontSize: 13 }}><b>Project:</b> RoboGarage — free project by <b>Leonardo Martellini</b></p>
 
-      <h2>1. Accettazione dei termini</h2>
-      <p>Accedendo o utilizzando RoboGarage accetti questi Termini di Servizio. Se non accetti, non utilizzare il servizio.</p>
+      <h2>1. Acceptance of Terms</h2>
+      <p>By accessing or using RoboGarage you accept these Terms of Service, the Privacy Policy, and the LICENSE. If you do not accept, do not use the service.</p>
 
-      <h2>2. Descrizione del servizio</h2>
-      <p>RoboGarage è una piattaforma per la gestione, condivisione e installazione di skill, agent e plugin per sistemi di intelligenza artificiale (Codex, Claude Code, OpenCode, Pi e altri). Il servizio è fornito in modalità <b>gratuita (free)</b>.</p>
+      <h2>2. Service Description</h2>
+      <p>RoboGarage is a platform for managing, sharing, and installing skills, agents, and plugins for AI systems (Codex, Claude Code, OpenCode, Pi, and others). The service is provided <b>free of charge</b>.</p>
 
-      <h2>3. Account utente</h2>
-      <p>Puoi creare un account con username e password. Sei responsabile della riservatezza delle tue credenziali e di tutte le attività effettuate con il tuo account.</p>
+      <h2>3. User Account</h2>
+      <p>You may create an account with username and password. You are responsible for the confidentiality of your credentials and for all activity under your account.</p>
 
-      <h2>4. Contenuti degli utenti</h2>
-      <p>I contenuti caricati (skill, repository, commenti) restano di proprietà dell'autore. Caricando contenuti su RoboGarage concedi alla piattaforma la licenza non esclusiva di ospitarli, visualizzarli e distribuirli all'interno del servizio.</p>
+      <h2>4. User Content</h2>
+      <p>Content you upload (skills, repositories, comments) remains owned by the author. By uploading content to RoboGarage you grant the platform a non-exclusive license to host, validate, display, and deliver it within the service.</p>
 
-      <h2>5. Validazione di skill e plugin</h2>
-      <p>RoboGarage offre una funzione di validazione automatica di skill e plugin. La validazione è effettuata su base tecnica (manifesto, frontmatter, cross-link) e <b>non costituisce garanzia</b> di sicurezza, funzionalità o idoneità all'uso. L'utente è l'unico responsabile dell'uso dei contenuti scaricati.</p>
+      <h2>5. Skill and Plugin Validation</h2>
+      <p>RoboGarage offers automatic validation of skills and plugins. Validation is performed on technical grounds (manifest, frontmatter, cross-links) and <b>does not constitute a guarantee</b> of security, functionality, or fitness for use. You are solely responsible for the use of content downloaded.</p>
 
-      <h2>6. Declino di responsabilità</h2>
-      <p>RoboGarage è fornito "<b>così com'è</b>" ("as is"), senza garanzie di alcun tipo, espresse o implicite. Il titolare <b>Leonardo Martellini</b> e i collaboratori <b>declinano ogni responsabilità</b> per:</p>
+      <h2>6. Disclaimer of Liability</h2>
+      <p>RoboGarage is provided "<b>as is</b>", without warranties of any kind, express or implied. The owner <b>Leonardo Martellini</b> and collaborators <b>disclaim all liability</b> for:</p>
       <ul>
-        <li>Danni diretti o indiretti derivanti dall'uso o dall'impossibilità di usare il servizio;</li>
-        <li>Perdita di dati, profitti o opportunità;</li>
-        <li>Contenuti di terze parti caricati o scaricati tramite la piattaforma;</li>
-        <li>Vulnerabilità di skill, plugin o agent installati tramite RoboGarage.</li>
+        <li>Direct or indirect damages arising from use or inability to use the service;</li>
+        <li>Loss of data, profits, or opportunities;</li>
+        <li>Third-party content uploaded or downloaded via the platform;</li>
+        <li>Vulnerabilities in skills, plugins, or agents installed via RoboGarage.</li>
       </ul>
 
-      <h2>7. Proprietà intellettuale</h2>
-      <p>Il software RoboGarage è distribuito sotto <b>licenza MIT</b>. I contenuti caricati dagli utenti restano di proprietà dei rispettivi autori.</p>
+      <h2>7. Intellectual Property</h2>
+      <p>The RoboGarage software is distributed under the <b>MIT License</b>. Content uploaded by users remains owned by the respective authors.</p>
 
-      <h2>8. Limitazioni di utilizzo</h2>
-      <p>È vietato utilizzare RoboGarage per:</p>
+      <h2>8. Usage Restrictions</h2>
+      <p>It is forbidden to use RoboGarage to:</p>
       <ul>
-        <li>Caricare contenuti illegali, diffamatori o che violano diritti di terzi;</li>
-        <li>Distribuire malware, codice malevolo o skill progettate per danneggiare sistemi altrui;</li>
-        <li>Violare la privacy altrui o raccogliere dati personali senza consenso.</li>
+        <li>Upload illegal, defamatory, or third-party-rights-violating content;</li>
+        <li>Distribute malware, malicious code, or skills designed to damage other systems;</li>
+        <li>Violate others' privacy or collect personal data without consent.</li>
       </ul>
 
-      <h2>9. Modifiche e interruzione del servizio</h2>
-      <p>Il servizio può essere modificato, sospeso o interrotto in qualsiasi momento senza preavviso. Essendo un progetto free, non è garantito alcun livello di servizio (SLA).</p>
+      <h2>9. Changes and Service Interruption</h2>
+      <p>The service may be modified, suspended, or interrupted at any time without notice. Being a free project, no service level (SLA) is guaranteed.</p>
 
-      <h2>10. Legge applicabile e foro competente</h2>
-      <p>I presenti termini sono regolati dalla legge italiana. Per ogni controversia è competente il foro del luogo di residenza o domicilio del consumatore, se ubicato in Italia, ovvero il foro di residenza del titolare.</p>
+      <h2>10. Governing Law and Jurisdiction</h2>
+      <p>These Terms are governed by Italian law. For any dispute, the court of your place of residence or domicile applies if you are a consumer in Italy, otherwise the court of the owner's residence.</p>
 
-      <h2>11. Contatti</h2>
-      <p>Per domande su questi termini: contatta l'amministratore dell'istanza RoboGarage che stai utilizzando.</p>
+      <h2>11. Contacts</h2>
+      <p>For questions about these Terms: contact the administrator of the RoboGarage instance you are using.</p>
 
       <hr style={{ margin: '30px 0', border: 'none', borderTop: '1px solid var(--line)' }} />
       <p className="dim" style={{ fontSize: 12 }}>
-        © 2026 Leonardo Martellini. Tutti i diritti riservati. RoboGarage è distribuito sotto licenza MIT.
+        © 2026 Leonardo Martellini. All rights reserved. RoboGarage is distributed under the MIT license.
       </p>
     </div>
   );
