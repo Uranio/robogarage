@@ -1,0 +1,10 @@
+{
+  "name": "github-robogarage",
+  "description": "Operazioni GitHub e deploy del progetto RoboGarage (frontend + backend su Render)",
+  "version": "1.0.0",
+  "author": "dupin",
+  "license": "MIT",
+  "compatibility": ["opencode", "claude", "codex"],
+  "tools": ["read", "write", "edit", "bash"],
+  "kind": "skill"
+}

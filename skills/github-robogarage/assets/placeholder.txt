@@ -1,0 +1,1 @@
+Questa cartella è riservata a immagini e asset della skill (es. screenshot della UI responsive, diagramma architettura Render).
