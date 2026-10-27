@@ -3,12 +3,12 @@ import { Link } from 'react-router-dom';
 import { api } from '../lib/api';
 import { useSession } from '../lib/session';
 
-type Agent = 'codex' | 'claude' | 'opencode' | 'pi' | 'cursor' | 'gemini';
+type Agent = 'codex' | 'claude' | 'crush' | 'pi' | 'cursor' | 'gemini';
 
 const AGENT_LABELS: Record<Agent, string> = {
   codex: 'Codex CLI',
   claude: 'Claude Code',
-  opencode: 'OpenCode / Crush',
+  crush: 'Crush / OpenCode',
   pi: 'Pi coding agent',
   cursor: 'Cursor',
   gemini: 'Gemini CLI',
@@ -184,7 +184,7 @@ export default function Plugins() {
           </div>
 
           <div className="row" style={{ gap: 8, alignItems: 'center', flexWrap: 'wrap' }}>
-            {['codex', 'claude', 'opencode', 'pi', 'cursor', 'gemini'].map((a) => (
+            {['codex', 'claude', 'crush', 'pi', 'cursor', 'gemini'].map((a) => (
               <button
                 key={a}
                 className={agent === a ? 'amber' : 'ghost'}

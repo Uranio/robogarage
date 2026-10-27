@@ -1,10 +1,12 @@
 /**
- * Comando: robogarage validate <owner/skill> [--ref <branch>] [--target <claude|opencode|codex|cursor|gemini>]
+ * Comando: robogarage validate <owner/skill> [--ref <branch>] [--target <claude|crush|codex|cursor|gemini>]
  * Chiama l'endpoint di validazione di RoboGarage su una skill.
  */
 
 import { RoboGarageClient } from '../client.js';
 import { loadConfig } from '../config.js';
+
+const VALID_TARGETS = ['claude', 'crush', 'codex', 'cursor', 'gemini'];
 
 export async function validateCommand(args: string[]): Promise<void> {
   const config = loadConfig();
@@ -20,7 +22,7 @@ export async function validateCommand(args: string[]): Promise<void> {
   for (let i = 0; i < args.length; i++) {
     const a = args[i];
     if (a === '--ref' || a === '-b') ref = args[++i] || undefined;
-    else if (a === '--target' || a === '-t') agentTarget = args[++i] || undefined;
+    else if (a === '--target' || a === '-t') agentTarget = (args[++i] || '') as any;
     else if (!a.startsWith('-')) target = a;
   }
 
@@ -41,6 +43,11 @@ export async function validateCommand(args: string[]): Promise<void> {
     const repo = repos.find((r) => r.owner === owner && r.name === skillName);
     if (!repo) {
       console.error(`✗ Skill ${owner}/${skillName} non trovata`);
+      process.exit(1);
+    }
+
+    if (agentTarget && !VALID_TARGETS.includes(agentTarget)) {
+      console.error(`✗ Target non valido: ${agentTarget}. Usa uno di: ${VALID_TARGETS.join(', ')}`);
       process.exit(1);
     }
 

@@ -1,7 +1,7 @@
 /**
  * Adattatore Claude Code (Anthropic).
  *
- * Claude Code usa lo standard "Agent Skills" aperto (https://agentskills.io).
+ * Claude Code usa lo standard Agent Skills aperto (https://agentskills.io).
  * Le skill sono cartelle in ~/.claude/skills/<nome>/ con un file SKILL.md
  * contenente frontmatter YAML e istruzioni.
  *

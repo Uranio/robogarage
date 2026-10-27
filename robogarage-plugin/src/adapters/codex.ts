@@ -1,16 +1,11 @@
 /**
  * Adattatore Codex CLI (OpenAI).
  *
- * Codex usa un sistema di plugin basato su pacchetti npm pubblicati sul registro npm.
- * I plugin esportano hook che vengono eseguiti durante le sessioni.
+ * Codex usa lo standard Agent Skills: cartelle in ~/.codex/skills/<nome>/
+ * con un file SKILL.md contenente frontmatter YAML e istruzioni.
+ * Non usa plugin TypeScript hook: ogni skill è una directory autonoma.
  *
- * Installazione:
- *   codex plugin marketplace add <url-robogarage-marketplace>
- *   codex plugin install robogarage@robogarage-plugin
- *
- * Configurazione in ~/.codex/config.toml:
- *   [features] hooks = true
- *   [plugins."robogarage@robogarage-plugin"] enabled = true
+ * Riferimento: https://github.com/wenhaochai/codex-plugins (layout plugins/<plugin>/skills/<skill>/SKILL.md)
  */
 
 import { RoboGarageClient } from '../client.js';
@@ -18,103 +13,62 @@ import { loadConfig, saveConfig } from '../config.js';
 import * as fs from 'fs';
 import * as path from 'path';
 
-const CODEX_CONFIG_DIR = path.join(process.env.HOME || '', '.codex');
-const CODEX_CONFIG_FILE = path.join(CODEX_CONFIG_DIR, 'config.toml');
+const CODEX_SKILLS_DIR = path.join(process.env.HOME || '', '.codex', 'skills');
 
-export interface CodexHooks {
-  'tool.execute.before'?: (input: any) => Promise<any>;
-  'tool.execute.after'?: (input: any, output: any) => Promise<any>;
-  'message.before'?: (input: any) => Promise<any>;
+export function codexSkillMarkdown(
+  name: string,
+  description: string,
+  baseUrl: string,
+  token: string
+): string {
+  return `---
+name: ${name}
+description: ${description}
+version: 1.0.0
+author: robogarage-plugin
+license: MIT
+compatibility: codex
+tools: [read, write, edit, bash]
+---
+
+# ${name}
+
+Skill RoboGarage per Codex CLI.
+
+## Connessione RoboGarage
+
+Questa skill è collegata al tuo account RoboGarage.
+
+**Base URL:** \`${baseUrl}\`
+**Token:** \`${token.slice(0, 8)}...\` (configurato in ~/.robogarage/config.json)
+
+## Operazioni disponibili
+
+Usa il comando \`robogarage\` da terminale per importare, pubblicare e validare skill su RoboGarage:
+
+- \`robogarage import <skill>\` — importa una skill da RoboGarage
+- \`robogarage publish <cartella>\` — pubblica una skill locale su RoboGarage
+- \`robogarage validate <skill>\` — valida una skill tramite l'API di RoboGarage
+
+---`;
 }
 
-/**
- * Genera il codice TypeScript del plugin Codex da salvare in ~/.codex/plugins/robogarage.ts
- * oppure da pubblicare come pacchetto npm.
- */
-export function codexPluginCode(baseUrl: string, token: string): string {
-  return `// ============================================================================
-// RoboGarage Plugin per Codex CLI
-// Generato automaticamente da robogarage-plugin v1.0.0
-// ============================================================================
-
-import { RoboGarageClient } from 'robogarage-plugin';
-
-const client = new RoboGarageClient('${baseUrl}', '${token}');
-
-export const hooks: Record<string, (input: any) => Promise<any>> = {
-  async 'tool.execute.before'(input) {
-    // Intercetta le chiamate a tool e può arricchirle con dati da RoboGarage
-    return input;
-  },
-  async 'tool.execute.after'(input, output) {
-    // Elabora l'output dopo l'esecuzione di un tool
-    return output;
-  },
-  async 'message.before'(input) {
-    // Intercetta i messaggi prima che vengano inviati al modello
-    return input;
-  },
-};
-
-// Esporta il client per uso da script esterni
-export { client };
-`;
-}
-
-/**
- * Scrive la configurazione TOML di Codex per abilitare il plugin.
- */
-export function writeCodexConfig(token: string, baseUrl?: string): void {
-  const config = loadConfig();
-  if (baseUrl) config.baseUrl = baseUrl;
-  config.token = token;
-  config.agent = 'codex';
-  saveConfig(config);
-
-  fs.mkdirSync(CODEX_CONFIG_DIR, { recursive: true });
-
-  const toml = `
-# ============================================================================
-# Configurazione RoboGarage per Codex CLI
-# Generato da robogarage-plugin v1.0.0
-# ============================================================================
-
-[features]
-hooks = true
-
-[plugins."robogarage@robogarage-plugin"]
-enabled = true
-
-[plugin_config."robogarage@robogarage-plugin"]
-base_url = "${config.baseUrl}"
-token_prefix = "${token.slice(0, 8)}..."
-`;
-  fs.writeFileSync(CODEX_CONFIG_FILE, toml.trim() + '\n', { mode: 0o600 });
-}
-
-/**
- * Installa l'adattatore Codex: scrive config.toml e mostra il codice del plugin.
- */
-export async function installCodex(client: RoboGarageClient): Promise<void> {
+export async function installCodex(
+  client: RoboGarageClient,
+  skillName: string,
+  description: string
+): Promise<void> {
   const config = loadConfig();
   if (!config.token) throw new Error('Nessun token configurato. Esegui prima: robogarage login');
 
-  const c = new RoboGarageClient(config.baseUrl, config.token);
-  try {
-    await c.health();
-  } catch (e: any) {
-    console.error(`✗ Impossibile contattare RoboGarage: ${e.message}`);
-    process.exit(1);
-  }
+  const dir = path.join(CODEX_SKILLS_DIR, skillName);
+  fs.mkdirSync(dir, { recursive: true });
 
-  writeCodexConfig(config.token, config.baseUrl);
+  const md = codexSkillMarkdown(skillName, description, config.baseUrl, config.token);
+  fs.writeFileSync(path.join(dir, 'SKILL.md'), md, { mode: 0o644 });
 
-  console.log('✓ Configurazione Codex scritta in ~/.codex/config.toml');
-  console.log('\n📋 Prossimi passi:');
-  console.log('  1. codex plugin marketplace add https://github.com/Uranio/robogarage-plugin');
-  console.log('  2. codex plugin install robogarage@robogarage-plugin');
-  console.log('  3. codex reload-plugins');
-  console.log('\n🔐 Il token è salvato in ~/.robogarage/config.json (permessi 600)');
+  console.log(`✓ Skill installata in ${dir}/SKILL.md`);
+  console.log(`  Codex la scoprirà automaticamente al prossimo avvio.`);
 }
 
 export async function loginCodex(token: string, baseUrl?: string): Promise<void> {

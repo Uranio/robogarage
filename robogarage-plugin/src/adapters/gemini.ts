@@ -1,8 +1,8 @@
 /**
  * Adattatore Gemini CLI (Google).
  *
- * Gemini supporta estensioni tramite gemini-extension.json e skill
- * standard Agent Skills.
+ * Gemini supporta lo standard Agent Skills: skill in ~/.gemini/skills/<nome>/SKILL.md.
+ * Non richiede file gemini-extension.json aggiuntivi per le skill base.
  */
 
 import { RoboGarageClient } from '../client.js';
@@ -10,28 +10,40 @@ import { loadConfig, saveConfig } from '../config.js';
 import * as fs from 'fs';
 import * as path from 'path';
 
-export function geminiExtensionJson(
+const GEMINI_SKILLS_DIR = path.join(process.env.HOME || '', '.gemini', 'skills');
+
+export function geminiSkillMarkdown(
   name: string,
   description: string,
   baseUrl: string,
   token: string
 ): string {
-  return JSON.stringify(
-    {
-      name,
-      version: '1.0.0',
-      description,
-      author: 'robogarage-plugin',
-      license: 'MIT',
-      robogarage: {
-        baseUrl,
-        tokenPrefix: token.slice(0, 8),
-      },
-      capabilities: ['skill_import', 'skill_validate', 'skill_publish'],
-    },
-    null,
-    2
-  );
+  return `---
+name: ${name}
+description: ${description}
+version: 1.0.0
+author: robogarage-plugin
+license: MIT
+compatibility: gemini
+tools: [read, write, edit, bash]
+---
+
+# ${name}
+
+Skill RoboGarage per Gemini CLI.
+
+## Connessione
+
+**Base URL:** \`${baseUrl}\`
+**Token:** \`${token.slice(0, 8)}...\` (configurato in ~/.robogarage/config.json)
+
+## Operazioni
+
+- \`robogarage import <skill>\`
+- \`robogarage publish <cartella>\`
+- \`robogarage validate <skill>\`
+
+---`;
 }
 
 export async function installGemini(
@@ -43,44 +55,13 @@ export async function installGemini(
   const config = loadConfig();
   if (!config.token) throw new Error('Nessun token configurato. Esegui prima: robogarage login');
 
-  const extDir = path.join(projectDir, '.gemini');
-  const skillsDir = path.join(extDir, 'skills', skillName);
-  fs.mkdirSync(skillsDir, { recursive: true });
+  const dir = path.join(GEMINI_SKILLS_DIR, skillName);
+  fs.mkdirSync(dir, { recursive: true });
 
-  // Scrive gemini-extension.json
-  const extJson = geminiExtensionJson(skillName, description, config.baseUrl, config.token);
-  fs.writeFileSync(path.join(extDir, 'gemini-extension.json'), extJson, { mode: 0o644 });
+  const md = geminiSkillMarkdown(skillName, description, config.baseUrl, config.token);
+  fs.writeFileSync(path.join(dir, 'SKILL.md'), md, { mode: 0o644 });
 
-  // Scrive SKILL.md per la skill
-  const md = `---
-name: ${skillName}
-description: ${description}
-version: 1.0.0
-author: robogarage-plugin
-license: MIT
-compatibility: gemini
-tools: [read, write, edit, bash]
----
-
-# ${skillName}
-
-Skill RoboGarage per Gemini CLI.
-
-**Base URL:** \`${config.baseUrl}\`
-**Token:** \`${config.token?.slice(0, 8)}...\`
-
-## Operazioni
-
-- \`robogarage import <skill>\`
-- \`robogarage publish <cartella>\`
-- \`robogarage validate <skill>\`
-
----`;
-  fs.writeFileSync(path.join(skillsDir, 'SKILL.md'), md, { mode: 0o644 });
-
-  console.log(`✓ Estensione Gemini installata in ${extDir}/`);
-  console.log(`  gemini-extension.json: ${path.join(extDir, 'gemini-extension.json')}`);
-  console.log(`  Skill: ${path.join(skillsDir, 'SKILL.md')}`);
+  console.log(`✓ Skill installata in ${dir}/SKILL.md`);
 }
 
 export async function loginGemini(token: string, baseUrl?: string): Promise<void> {

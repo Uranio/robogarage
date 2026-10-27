@@ -1,11 +1,11 @@
 # robogarage-plugin
 
-Plugin ufficiale per collegare **Codex CLI**, **Claude Code**, **OpenCode/Crush**, **Pi**, **Cursor** e **Gemini** al tuo account **RoboGarage** e automatizzare tutte le operazioni su skill, repository, import, publish e validazione.
+Plugin ufficiale per collegare **Codex CLI**, **Claude Code**, **Crush/OpenCode**, **Pi**, **Cursor** e **Gemini** al tuo account **RoboGarage** e automatizzare tutte le operazioni su skill, repository, import, publish e validazione.
 
 ## Cosa fa
 
 - Si autentica con un **Personal Access Token (PAT)** di RoboGarage (mostrato una sola volta)
-- Installa adattatori nativi per i principali agent AI
+- Installa skill **Agent Skills** (standard aperto, https://agentskills.io) per i principali agent AI
 - Importa skill da RoboGarage nel tuo agent locale
 - Pubblica skill locali su RoboGarage con validazione automatica
 - Valida skill tramite l'API di RoboGarage (`POST /api/repos/:id/validate`)
@@ -47,7 +47,7 @@ Poi configura il plugin:
 robogarage login --token rk_abc123def456 --agent codex
 ```
 
-Agent supportati: `codex`, `claude`, `opencode`, `pi`, `cursor`, `gemini`.
+Agent supportati: `codex`, `claude`, `crush`, `pi`, `cursor`, `gemini`.
 
 ## Comandi
 
@@ -60,65 +60,18 @@ Agent supportati: `codex`, `claude`, `opencode`, `pi`, `cursor`, `gemini`.
 | `robogarage validate <owner/skill> [--target <target>]` | Valida una skill via API RoboGarage |
 | `robogarage publish <cartella>` | Pubblica una cartella locale su RoboGarage |
 
-## Adattatori per agent
+## Directory skill per ogni agent
 
-### Codex CLI
-Il plugin scrive la configurazione in `~/.codex/config.toml` e genera il codice del plugin da salvare in `~/.codex/plugins/robogarage.ts`.
+Il plugin installa skill nello standard **Agent Skills** (SKILL.md con frontmatter YAML) nelle directory corrette per ogni agent:
 
-```bash
-robogarage login --token <TOKEN> --agent codex
-```
-
-Poi:
-```bash
-codex plugin marketplace add https://github.com/Uranio/robogarage-plugin
-codex plugin install robogarage@robogarage-plugin
-codex reload-plugins
-```
-
-### Claude Code
-Crea una skill Agent Skills in `~/.claude/skills/robogarage/SKILL.md` configurata con il tuo token RoboGarage.
-
-```bash
-robogarage login --token <TOKEN> --agent claude
-```
-
-Carica in Claude Code con `/skill robogarage`.
-
-### OpenCode / Crush
-Crea una skill in `~/.config/opencode/skills/robogarage/SKILL.md`.
-
-```bash
-robogarage login --token <TOKEN> --agent opencode
-```
-
-### Pi coding agent
-Crea una skill in `~/.pi/skills/robogarage/SKILL.md`.
-
-```bash
-robogarage login --token <TOKEN> --agent pi
-```
-
-### Cursor
-Crea `.cursor-plugin/plugin.json` e la skill nella cartella del progetto.
-
-```bash
-robogarage login --token <TOKEN> --agent cursor
-```
-
-### Gemini CLI
-Crea `.gemini/gemini-extension.json` e la skill nella cartella del progetto.
-
-```bash
-robogarage login --token <TOKEN> --agent gemini
-```
-
-## Sicurezza
-
-- Il token viene salvato in `~/.robogarage/config.json` con permessi `600` (solo lettura/scrittura per il proprietario)
-- Il token non viene mai inviato a terzi, solo al tuo backend RoboGarage
-- Puoi revocare il token in qualsiasi momento da RoboGarage (`DELETE /api/users/tokens/:id`)
-- Il valore in chiaro del token non è mai memorizzato sul server (solo hash scrypt)
+| Agent | Directory | Comando |
+|-------|-----------|---------|
+| **Codex CLI** | `~/.codex/skills/<nome>/SKILL.md` | `--agent codex` |
+| **Claude Code** | `~/.claude/skills/<nome>/SKILL.md` | `--agent claude` |
+| **Crush / OpenCode** | `~/.config/crush/skills/<nome>/SKILL.md` (anche `~/.config/agents/skills/`, `~/.agents/skills/`) | `--agent crush` |
+| **Pi coding agent** | `~/.agents/skills/<nome>/SKILL.md` (anche `~/.pi/agent/skills/`) | `--agent pi` |
+| **Cursor** | `~/.cursor/skills/<nome>/SKILL.md` | `--agent cursor` |
+| **Gemini CLI** | `~/.gemini/skills/<nome>/SKILL.md` | `--agent gemini` |
 
 ## Esempio di flusso completo
 
@@ -138,6 +91,13 @@ robogarage publish ./mia-skill --visibility public --kind skill
 # 5. Importa una skill da un altro utente
 robogarage import neo/web-scraper
 ```
+
+## Sicurezza
+
+- Il token viene salvato in `~/.robogarage/config.json` con permessi `600` (solo lettura/scrittura per il proprietario)
+- Il token non viene mai inviato a terzi, solo al tuo backend RoboGarage
+- Puoi revocare il token in qualsiasi momento da RoboGarage (`DELETE /api/users/tokens/:id`)
+- Il valore in chiaro del token non è mai memorizzato sul server (solo hash scrypt)
 
 ## Licenza
 

@@ -1,8 +1,8 @@
 /**
  * Adattatore Cursor.
  *
- * Cursor supporta plugin tramite .cursor-plugin/plugin.json nella radice del progetto
- * e skill standard Agent Skills.
+ * Cursor supporta lo standard Agent Skills: skill in ~/.cursor/skills/<nome>/SKILL.md.
+ * Non richiede file di configurazione JSON aggiuntivi.
  */
 
 import { RoboGarageClient } from '../client.js';
@@ -10,34 +10,40 @@ import { loadConfig, saveConfig } from '../config.js';
 import * as fs from 'fs';
 import * as path from 'path';
 
-export function cursorPluginJson(
+const CURSOR_SKILLS_DIR = path.join(process.env.HOME || '', '.cursor', 'skills');
+
+export function cursorSkillMarkdown(
   name: string,
   description: string,
   baseUrl: string,
   token: string
 ): string {
-  return JSON.stringify(
-    {
-      name,
-      version: '1.0.0',
-      description,
-      author: 'robogarage-plugin',
-      license: 'MIT',
-      skills: [
-        {
-          name,
-          description,
-          path: `./skills/${name}/SKILL.md`,
-        },
-      ],
-      robogarage: {
-        baseUrl,
-        tokenPrefix: token.slice(0, 8),
-      },
-    },
-    null,
-    2
-  );
+  return `---
+name: ${name}
+description: ${description}
+version: 1.0.0
+author: robogarage-plugin
+license: MIT
+compatibility: cursor
+tools: [read, write, edit, bash]
+---
+
+# ${name}
+
+Skill RoboGarage per Cursor.
+
+## Connessione
+
+**Base URL:** \`${baseUrl}\`
+**Token:** \`${token.slice(0, 8)}...\` (configurato in ~/.robogarage/config.json)
+
+## Operazioni
+
+- \`robogarage import <skill>\`
+- \`robogarage publish <cartella>\`
+- \`robogarage validate <skill>\`
+
+---`;
 }
 
 export async function installCursor(
@@ -49,44 +55,13 @@ export async function installCursor(
   const config = loadConfig();
   if (!config.token) throw new Error('Nessun token configurato. Esegui prima: robogarage login');
 
-  const pluginDir = path.join(projectDir, '.cursor-plugin');
-  const skillsDir = path.join(pluginDir, 'skills', skillName);
-  fs.mkdirSync(skillsDir, { recursive: true });
+  const dir = path.join(CURSOR_SKILLS_DIR, skillName);
+  fs.mkdirSync(dir, { recursive: true });
 
-  // Scrive plugin.json
-  const pluginJson = cursorPluginJson(skillName, description, config.baseUrl, config.token);
-  fs.writeFileSync(path.join(pluginDir, 'plugin.json'), pluginJson, { mode: 0o644 });
+  const md = cursorSkillMarkdown(skillName, description, config.baseUrl, config.token);
+  fs.writeFileSync(path.join(dir, 'SKILL.md'), md, { mode: 0o644 });
 
-  // Scrive SKILL.md per la skill
-  const md = `---
-name: ${skillName}
-description: ${description}
-version: 1.0.0
-author: robogarage-plugin
-license: MIT
-compatibility: cursor
-tools: [read, write, edit, bash]
----
-
-# ${skillName}
-
-Skill RoboGarage per Cursor.
-
-**Base URL:** \`${config.baseUrl}\`
-**Token:** \`${config.token?.slice(0, 8)}...\`
-
-## Operazioni
-
-- \`robogarage import <skill>\`
-- \`robogarage publish <cartella>\`
-- \`robogarage validate <skill>\`
-
----`;
-  fs.writeFileSync(path.join(skillsDir, 'SKILL.md'), md, { mode: 0o644 });
-
-  console.log(`✓ Plugin Cursor installato in ${pluginDir}/`);
-  console.log(`  plugin.json: ${path.join(pluginDir, 'plugin.json')}`);
-  console.log(`  Skill: ${path.join(skillsDir, 'SKILL.md')}`);
+  console.log(`✓ Skill installata in ${dir}/SKILL.md`);
 }
 
 export async function loginCursor(token: string, baseUrl?: string): Promise<void> {

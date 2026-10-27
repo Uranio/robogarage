@@ -1,8 +1,11 @@
 /**
  * Adattatore Pi coding agent.
  *
- * Pi usa skill con SKILL.md in ~/.pi/skills/<nome>/ seguendo lo standard
- * Agent Skills con frontmatter YAML.
+ * Pi supporta lo standard Agent Skills e legge skill da:
+ *   - ~/.agents/skills/ (store condiviso, usato anche dal CLI skills)
+ *   - ~/.pi/agent/skills/ (directory locale Pi)
+ *
+ * Le skill sono SKILL.md con frontmatter YAML, seguendo lo standard Agent Skills.
  */
 
 import { RoboGarageClient } from '../client.js';
@@ -10,7 +13,10 @@ import { loadConfig, saveConfig } from '../config.js';
 import * as fs from 'fs';
 import * as path from 'path';
 
-const PI_SKILLS_DIR = path.join(process.env.HOME || '', '.pi', 'skills');
+const PI_SKILLS_DIRS = [
+  path.join(process.env.HOME || '', '.agents', 'skills'),
+  path.join(process.env.HOME || '', '.pi', 'agent', 'skills'),
+];
 
 export function piSkillMarkdown(
   name: string,
@@ -52,13 +58,14 @@ export async function installPi(
   const config = loadConfig();
   if (!config.token) throw new Error('Nessun token configurato. Esegui prima: robogarage login');
 
-  const dir = path.join(PI_SKILLS_DIR, skillName);
+  const dir = path.join(PI_SKILLS_DIRS[0], skillName);
   fs.mkdirSync(dir, { recursive: true });
 
   const md = piSkillMarkdown(skillName, description, config.baseUrl, config.token);
   fs.writeFileSync(path.join(dir, 'SKILL.md'), md, { mode: 0o644 });
 
   console.log(`✓ Skill installata in ${dir}/SKILL.md`);
+  console.log(`  Directory alternative: ${PI_SKILLS_DIRS.slice(1).join(', ')}`);
 }
 
 export async function loginPi(token: string, baseUrl?: string): Promise<void> {
