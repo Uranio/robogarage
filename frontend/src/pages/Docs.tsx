@@ -54,7 +54,7 @@ export default function Docs() {
             <h2>Guida rapida</h2>
             <ol style={{ lineHeight: '1.8' }}>
               <li>
-                <b>Registrati</b> su <Link to="/register">RoboGarage</o> oppure effettua il
+                <b>Registrati</b> su <Link to="/register">RoboGarage</Link> oppure effettua il
                 <Link to="/login">login</Link>.
               </li>
               <li>
@@ -242,7 +242,7 @@ export default function Docs() {
             <p>
               I PAT permettono di usare il plugin CLI e le API di RoboGarage senza
               inserire username e password ogni volta. Vanno creati dalla pagina
-              <Link to="/plugins">Plugin</a> dopo il login.
+              <Link to="/plugins">Plugin</Link> dopo il login.
             </p>
             <ul style={{ lineHeight: '1.8' }}>
               <li>Il valore in chiaro viene mostrato <b>una sola volta</b> alla creazione.</li>
@@ -283,7 +283,7 @@ export default function Docs() {
             <h3>2. Configurazione</h3>
             <p>
               Ottieni un <b>Personal Access Token (PAT)</b> dalla pagina
-              <Link to="/plugins">Plugin</a> di RoboGarage (mostrato una sola volta),
+              <Link to="/plugins">Plugin</Link> di RoboGarage (mostrato una sola volta),
               poi configura il plugin:
             </p>
             <div className="code" style={{ fontSize: 12, whiteSpace: 'pre-wrap', marginBottom: 10 }}>
@@ -442,7 +442,7 @@ export default function Docs() {
                 width: '100%',
                 textAlign: 'left',
                 padding: '6px 10px',
-                borderRadius: 6px,
+                borderRadius: '6px',
                 fontSize: 13,
                 border: 'none',
                 background: active === s.id ? 'rgba(51,255,102,.06)' : 'transparent',
